@@ -1,0 +1,6 @@
+# Ignore all files and folders in web-applications
+*
+
+# But keep these specific files and folders
+!.gitignore
+!README.md

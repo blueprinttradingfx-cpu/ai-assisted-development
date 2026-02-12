@@ -1,0 +1,38 @@
+{
+  "folders": [
+    {
+      "path": ".agent",
+    },
+    {
+      "path": ".claude",
+    },
+    {
+      "path": ".cursor",
+    },
+    {
+      "path": ".gemini",
+    },
+    {
+      "path": ".git",
+    },
+    {
+      "path": ".github",
+    },
+    {
+      "path": ".windsurf",
+    },
+    {
+      "path": "project-management",
+    },
+    {
+      "path": "packages",
+    },
+    {
+      "path": "skills",
+    },
+    {
+      "path": "web-applications",
+    },
+  ],
+  "settings": {},
+}

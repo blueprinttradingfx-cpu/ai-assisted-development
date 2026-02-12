@@ -1,0 +1,5 @@
+# Ignore all files and folders in tickets
+*
+
+# But keep these specific files and folders
+!.gitignore
