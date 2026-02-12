@@ -8,9 +8,12 @@ This document tracks high-level ideas, feature requests, and unscoped concepts. 
 
 ## 🗺️ Roadmap
 
+- NONE
+
 ### 🔍 Ready for Review (Scoped)
 
-- [BSLSA-1387](file:///c:/www/slshub project management/tickets/BSLSA-1387-dashboard-renewal-notification/implementation_plan.md) - Dashboard Renewal notification - additional work needed
-- [BSLSA-1193](file:///c:/www/project-management/tickets/T-1193/implementation_plan.md) - National Medal Validation
+- NONE
 
 ### ✅ Verified - Ready for Implementation
+
+- NONE
