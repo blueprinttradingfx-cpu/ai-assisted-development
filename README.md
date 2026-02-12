@@ -1,8 +1,8 @@
-# AI DevKit
+# AI Assisted Development
 
-**The standard for AI-assisted software development.**
+**Inspired by https://github.com/codeaholicguy/ai-devkit with enhanced project management capabilities.**
 
-AI DevKit is an open-source ecosystem designed to bridge the gap between human intent and AI execution. It provides a suite of tools that standardize how AI agents interact with codebases, manage context, and execute development workflows.
+This project builds upon the foundation of AI DevKit, adding a comprehensive project management ticketing system to retain complete documentation and context throughout the development lifecycle. It maintains the core principles of standardizing how AI agents interact with codebases while providing structured documentation for every development phase.
 
 ## Vision
 
