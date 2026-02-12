@@ -26,7 +26,6 @@ This is a monorepo structured for AI-assisted development:
   - [tickets/](./project-management/tickets/): Active and completed development tasks with full phase documentation.
 - **[web-applications/](./web-applications/)**: Core application code (API, Frontend, etc.). All new applications MUST be created or placed within this directory.
 - **[skills/](./skills/)**: Custom AI instructions and domain-specific capabilities.
-- **[docs/](./docs/)**: General project documentation.
 
 ## 🤝 Human Workflow: Adding Tasks
 
