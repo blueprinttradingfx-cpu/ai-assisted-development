@@ -2,15 +2,15 @@
 
 ## Project Context
 
-This project uses ai-devkit for structured AI-assisted development. Phase documentation is located within each ticket folder in `project-management/tickets/T-XXX/`.
+This project uses ai-devkit for structured AI-assisted development. Phase documentation is located within each ticket folder in `project-management/tickets/T-XXX/`. The core codebase is consolidated under `web-applications/`, shared assets are in `packages/`, and custom AI instructions are in `skills/`.
 
 ## Documentation Structure
 
-- `project-management/tickets/T-XXX/requirements/` - Problem understanding and requirements
-- `project-management/tickets/T-XXX/design/` - System architecture and design decisions
-- `project-management/tickets/T-XXX/planning/` - Task breakdown and project planning
-- `project-management/tickets/T-XXX/implementation/` - Implementation guides and notes
-- `project-management/tickets/T-XXX/testing/` - Testing strategy and test cases
+- `project-management/tickets/T-XXX/requirements/README.md` - Problem understanding and requirements
+- `project-management/tickets/T-XXX/design/README.md` - System architecture and design decisions
+- `project-management/tickets/T-XXX/planning/README.md` - Task breakdown and project planning
+- `project-management/tickets/T-XXX/implementation/README.md` - Implementation guides and notes
+- `project-management/tickets/T-XXX/testing/README.md` - Testing strategy and test cases
 - `project-management/tickets/T-XXX/deployment/` - Deployment and infrastructure docs
 - `project-management/tickets/T-XXX/monitoring/` - Monitoring and observability setup
 
@@ -22,10 +22,33 @@ This project uses ai-devkit for structured AI-assisted development. Phase docume
 
 ## Development Workflow
 
-- Review phase documentation in `project-management/tickets/T-XXX/` before implementing features
-- Keep requirements, design, and implementation docs updated as the project evolves
-- Reference the planning doc for task breakdown and priorities
-- Copy the testing template (`project-management/tickets/docs/ai/testing/README.md`) before creating feature-specific testing docs
+Before starting, categorize the ticket to choose the most efficient **Workflow Track**:
+
+### 📊 Decision Matrix
+
+- **Track A (Lean)**: Bug fixes, minor UI tweaks, or single-file logic updates. (Touches < 3 files)
+- **Track B (Full)**: New features, architectural changes, or complex refactors. (Touches >= 3 files or adds new tables/API endpoints)
+
+### 🔄 Workflow Track A: Lean (Small/Medium)
+
+1. **Initialize**: Create `tickets/T-XXX/` folder. Copy only `TEMPLATE-implementation_plan.md` to the root as `implementation_plan.md`.
+2. **Plan**: Use headers in `implementation_plan.md` (Requirements, Design, Plan) to document the approach concisely.
+3. **Execute**: Create `tasks.md` in the root and implement.
+4. **Finalize**: Set `**Status**: [DONE]` and update `backlog.md`.
+
+### 🔄 Workflow Track B: Full (Major Features)
+
+1. **Initialize**: Create `tickets/T-XXX/` and all subfolders (`requirements/`, `design/`, etc.) from `ticket_templates/`.
+2. **Phase-Based Execution**: Strictly follow the Requirements → Design → Planning → Implementation → Testing sequence, updating each folder's `README.md`.
+3. **Approval**: Present the `implementation_plan.md` (summary) for explicit user approval at each major phase.
+4. **Finalize**: Set `**Status**: [DONE]` and update `backlog.md`.
+
+### 📝 Core Workflow Rules (Applies to All)
+
+- **Read the Backlog**: Check `project-management/backlog.md` to understand current priorities.
+- **Backlog Update**: Move/Link the item in `backlog.md` under **🔍 Ready for Review** when starting.
+- **Approval**: **Wait for explicit approval** on plans/designs before code execution.
+- **Completion**: update `backlog.md` to **✅ Verified** when confirmed.
 
 ## AI Interaction Guidelines
 
