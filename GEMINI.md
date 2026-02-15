@@ -141,3 +141,34 @@ When working on this project, you can run commands to:
 - Verify implementation against design (`check-implementation`)
 - Writing tests (`writing-test`)
 - Perform structured code reviews (`code-review`)
+- Log salient changes (`/log`)
+- Product discovery (`/discover`)
+- Task epic planning (`/task`)
+
+## Activity Log Requirement
+
+**Agents should maintain a high-level history of major changes in `activity-log.md`.**
+
+- Use the `/log` command after completing significantly complex work or making architectural decisions.
+- Keep entries concise and focused on "what" and "why".
+
+## Progressive Discovery
+
+**Agents should minimize context consumption by only reading relevant documentation.**
+
+- Start with root `index.md` or `README.md`.
+- Only drill into specialized subfolders (e.g., specific ticket folders or specialized rules) when the task requires it.
+
+## Specialized Rules
+
+Specialized rules are available in `.agent/rules/`:
+
+- `javascript.md`: JS/TS best practices.
+- `tdd.md`: Test-driven development discipline.
+- `security.md`: JWT and timing-safe comparison guidance.
+- `productmanager.md`: Product discovery and story mapping.
+- `task-creator.md`: Systematic task planning and execution.
+- `ui.md`: UI/UX and motion design principles.
+- `user-testing.md`: Test generation from user journeys.
+- `agent-orchestrator.md`: Coordination for complex tasks.
+- `requirements.md`: Systematic requirements analysis.
