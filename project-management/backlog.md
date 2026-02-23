@@ -6,9 +6,6 @@ This document tracks high-level ideas, feature requests, and unscoped concepts. 
 
 ## 🗺️ Roadmap
 
-- For Human:
-- https://www.facebook.com/profile.php?id=61559610704011&sk=photo make the public portfolio data inside the site
-
 ### 🔍 Ready for Review (Scoped)
 
 ### ✅ Verified

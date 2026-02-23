@@ -27,17 +27,67 @@ This is a monorepo structured for AI-assisted development:
 - **[web-applications/](./web-applications/)**: Core application code (API, Frontend, etc.). All new applications MUST be created or placed within this directory.
 - **[skills/](./skills/)**: Custom AI instructions and domain-specific capabilities.
 
-## 🤝 Human Workflow: Adding Tasks
+## 🤝 Human Workflow: Strategic Orchestration
 
-Humans should use the backlog to communicate requirements to AI agents.
+The human operator acts as the **Source of Truth** and **Project Manager**. Your primary role is to define the "Why" and "What", while the AI handles the "How".
 
-### Adding to the Backlog
+For a detailed guide on how to manage backlogs, review plans, and verify features, please refer to the dedicated:
 
-1. Open **[project-management/backlog.md](./project-management/backlog.md)**.
-2. Add your idea or requirement under the **💡 Raw Ideas (Unscoped)** section.
-3. Provide a brief description or link to external requirements.
+> [!TIP]
+> **[HUMAN.md – The Human Operator's Manual](./HUMAN.md)**
 
-Once an item is in the backlog, an AI agent can pick it up, scope it into a ticket (e.g., `T-XXX`), and move it to the **ROADMAP**.
+### Quick Summary for Humans
+
+| Action            | How to do it                                                                                            |
+| :---------------- | :------------------------------------------------------------------------------------------------------ |
+| **Align Vision**  | Update `vision.md`, `PRD.md`, and `epic_backlogs.md`.                                                   |
+| **Add Features**  | Add a "Raw Idea" to **[backlog.md](./project-management/backlog.md)**.                                  |
+| **Start Project** | Use the **[Architect Prompt](#🚀-starting-a-new-project)** below.                                       |
+| **Resume Work**   | Place project in `web-applications/` and use the **[Resume Prompt](#-continuing-an-existing-project)**. |
+| **Approve Plans** | Use the implementation plan checkpoint to verify the AI's approach.                                     |
+
+---
+
+### AI-Optimized Prompts
+
+Use these prompts to ensure your AI agent has full context and follows the framework.
+
+#### 🚀 Starting a New Project
+
+_Use this in ChatGPT, Claude, or any AI assistant to initialize your project documents._
+
+```markdown
+I am using the AI-Assisted Development Framework (https://github.com/blueprinttradingfx-cpu/ai-assisted-development/) to build a new project.
+
+Act as a Senior Solution Architect. Your goal is to help me define the project foundation by filling out `vision.md`, `PRD.md`, and `epic_backlogs.md`.
+
+Please interview me to gather all necessary details. Ask questions one by one or in small logical groups covering:
+
+1. The core vision and "Why" behind the project.
+2. Target audience and key problems being solved.
+3. High-level feature roadmap (MVP and beyond).
+4. Technical constraints or preferences.
+
+After the interview, output the content for all three files in a structured markdown format.
+```
+
+#### 🔄 Continuing an Existing Project
+
+_Use this with your coding agent (Windsurf, Cursor, etc.) to resume work on this codebase._
+
+> [!IMPORTANT]
+> Ensure your project code is located in the `web-applications/` directory.
+
+```markdown
+I want to continue development on my project located in `web-applications/` directory using the AI-Assisted Development Framework patterns.
+
+1. Read and analyze the existing project files: `vision.md`, `PRD.md`, and `epic_backlogs.md`.
+2. Perform a "Gap Analysis": Compare the current codebase state with the goals defined in the project docs.
+3. Ask me any clarifying questions needed to align your understanding with the project trajectory.
+4. Propose the next logical tickets or tasks to be moved into the active roadmap.
+
+The goal is to ensure the project docs remain the accurate Source of Truth.
+```
 
 ## 🤖 AI Workflow: Phase-Based Development
 

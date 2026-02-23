@@ -4,6 +4,12 @@
 
 This project uses ai-devkit for structured AI-assisted development. Phase documentation is located within each ticket folder in `project-management/tickets/T-XXX/`. The core codebase is consolidated under `web-applications/`, shared assets are in `packages/`, and custom AI instructions are in `skills/`.
 
+### Element TD Project Rules
+
+- **Source of Truth**: Always reference `project-management/project/vision.md` (End Goal), `project-management/project/PRD.md` (Roadmap), and `project-management/project/epic_backlogs.md` (Ticket Breakdown) when working on the tasks.
+- **Directory Constraint**: All application code, scripts, and feature implementation MUST reside within the `web-applications/` directory.
+- **Hallucination Prevention**: Verify all task mechanics and rules against the core project docs before implementation.
+
 ## Documentation Structure
 
 - `project-management/tickets/T-XXX/requirements/README.md` - Problem understanding and requirements
@@ -52,9 +58,11 @@ Before starting, categorize the ticket to choose the most efficient **Workflow T
 
 ## AI Interaction Guidelines
 
-- When implementing features, first check relevant phase documentation
-- For new features, start with requirements clarification
-- Update phase docs when significant changes or decisions are made
+- When implementing features, first check relevant phase documentation.
+- For new features, start with requirements clarification and discovery questions.
+- **Human Collaboration**: Respect the human operator's role as project manager. Always wait for explicit approval on the `implementation_plan.md` before writing production code.
+- **Backlog Duty**: Proactively suggest tasks from the `backlog.md` if the current objective is met.
+- Update phase docs when significant changes or decisions are made.
 
 ## Skills (Extend Your Capabilities)
 

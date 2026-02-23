@@ -4,6 +4,11 @@
 
 This project uses ai-devkit for structured AI-assisted development. Phase documentation is located within each ticket folder in `project-management/tickets/T-XXX/`. The core codebase is consolidated under `web-applications/`, shared assets are in `packages/`, and custom AI instructions are in `skills/`.
 
+### Element TD Project Rules
+
+- **Source of Truth**: Always reference `project-management/project/vision.md` (End Goal) and `project-management/project/PRD.md` (Roadmap) when working on the tasks.
+- **Hallucination Prevention**: Verify all task mechanics and rules against `PRD.md` or the PRD.md before implementation.
+
 ## Documentation Structure
 
 - `project-management/tickets/T-XXX/requirements/README.md` - Problem understanding and requirements
