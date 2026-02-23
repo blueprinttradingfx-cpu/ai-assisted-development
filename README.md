@@ -68,7 +68,7 @@ Please interview me to gather all necessary details. Ask questions one by one or
 3. High-level feature roadmap (MVP and beyond).
 4. Technical constraints or preferences.
 
-After the interview, output the content for all three files in a structured markdown format.
+After the interview, output the content for all three files in a structured markdown format. Finally, provide clear instructions for the coding agent to review these foundation files and begin the ticket creation process in `project-management/tickets/` to start development.
 ```
 
 #### 🔄 Continuing an Existing Project
@@ -87,7 +87,13 @@ I want to continue development on my project located in `web-applications/` dire
 4. Propose the next logical tickets or tasks to be moved into the active roadmap.
 
 The goal is to ensure the project docs remain the accurate Source of Truth.
+Finally, provide clear instructions for the coding agent to review these foundation files and begin the ticket creation process in `project-management/tickets/` to start development.
 ```
+
+### Domain-Specific Workflows
+
+> [!TIP]
+> **Domain-Specific Workflows**: After placing your project in the `web-applications/` directory, provide your tech stack details to the AI. Ask it to "Create a domain-level agent workflow following best practices for <your tech stack>" and save it to the **[.agent/workflows/](./.agent/workflows/)** directory of your project `web-applications/<your-project-name>` folder.
 
 ## 🤖 AI Workflow: Phase-Based Development
 
