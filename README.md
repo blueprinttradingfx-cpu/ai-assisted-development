@@ -1,8 +1,8 @@
 # AI Assisted Development
 
-**A standardized framework for building aligned, well-documented applications with AI Agents.**
+**It's not a "1 prompt, wait 20 minutes, and voilà" tool — it's a rigorous, enterprise-grade development process.**
 
-This project optimizes the partnership between Human Orcherstrators and AI Coding Agents by enforcing a **Phase-Based Development** lifecycle. It ensures that context is never lost, and architectural consistency is maintained throughout the life of the project.
+This starter kit evolves your idea through the full product lifecycle: you'll define requirements like a **Product Owner**, design the experience like an **Art Director**, manage tasks like a **Project Manager**, and ship a real product like a **CEO**. You'll experience the real-world software development process — from raw idea to corporate-standard application.
 
 ## 🤖 AI Agent Workflow (MUST FOLLOW)
 
