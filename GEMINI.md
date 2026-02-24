@@ -60,6 +60,7 @@ Before starting, categorize the ticket to choose the most efficient **Workflow T
 ## AI Interaction Guidelines
 
 - When implementing features, first check relevant phase documentation and high-fidelity mockups.
+- **Reference Mockup Implementation (CRITICAL)**: If a ticket's `design/README.md` contains a `## Reference Mockups` section with paths to `.html` mockups, you MUST read those specific HTML files and implement the Flutter UI to match them exactly (including extracting correct layout, typography, structure, and visual tokens). Do not invent boilerplate UI if a mockup exists.
 - **Epic Scoping**: If tasked with a new Epic, follow the iterative scoping workflow: generate documentation (Requirements -> Design -> Planning) for the entire Epic's tickets BEFORE starting any implementation.
 - **Human Collaboration**: Respect the human operator's role as project manager. Always wait for explicit approval on the `implementation_plan.md` before writing production code.
 - **Design Alignment**: Every ticket MUST be anchored to the Design Bible. Ensure implementation matches the behavior and visuals defined in the interaction guide and style guide.

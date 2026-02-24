@@ -43,10 +43,11 @@ For each task in order:
 
 1. Display the section/context, full bullet text, and any existing notes.
 2. Suggest relevant docs to reference (requirements/design/implementation).
-3. Ask: "Plan for this task?" Offer to outline sub-steps using the design doc.
-4. Prompt to mark status (`done`, `in-progress`, `blocked`, `skipped`) and capture short notes/next steps.
-5. Encourage code/document edits inside Cursor; offer commands/snippets when useful.
-6. If blocked, record blocker info and move task to the end or into a "Blocked" list.
+3. **CRITICAL PRE-CHECK**: Check the `design/README.md` for a `## Reference Mockups` section. If present, use `view_file` to read the specific `.html` mockup file(s). You MUST base your implementation on this exact HTML layout and styling.
+4. Ask: "Plan for this task?" Offer to outline sub-steps using the design doc and `.html` mockups.
+5. Prompt to mark status (`done`, `in-progress`, `blocked`, `skipped`) and capture short notes/next steps.
+6. Encourage code/document edits inside Cursor; offer commands/snippets when useful.
+7. If blocked, record blocker info and move task to the end or into a "Blocked" list.
 
 ## Step 5: Update Planning Doc
 

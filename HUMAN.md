@@ -76,12 +76,13 @@ After the strategic planning and high-fidelity design phases are complete, we mo
    > **Requirements for Scoping:**
    >
    > 1. **Alignment**: Every ticket's requirements MUST be anchored to the **Project Foundation** (Vision, PRD, FRD, Epic Backlog).
-   > 2. **Design Fidelity**: Every ticket's design MUST follow the **Design Bible** (Sitemap, Style Guide, Interaction Guide, etc.) and reference the specific exported mockups in the design folder.
-   > 3. **Traceability**: Each ticket's `design/README.md` MUST include a direct link to its corresponding exported mockup (e.g., `Reference Mockup: project-management/design/FeatureName/index.html`).
-   > 4. **Structure**: Each ticket must follow the standard phase-based structure (Requirements -> Design -> Planning -> Implementation -> Testing).
-   > 5. **Sync**: Read `project-management/design/screen_list.md` and explicitly link the generated tickets to the specific screens by updating their `- **Ticket**: T-XXX` field.
-   > 6. **Gap Handling**: If the generated screens in Stitch reveal a missing user flow, or if there is a gap between the documented requirements and the available exported mockups, you MUST identify this gap. Provide instructions to the human to generate the necessary missing screens in Stitch, and update both the `requirements/README.md` and `design/README.md` to ensure they are fully synced and mapped.
-   > 7. **Completeness**: Break down the entire Epic into manageable, sequential tickets.
+   > 2. **Design Fidelity**: Every ticket's design MUST follow the **Design Bible** (Sitemap, Style Guide, Interaction Guide, etc.). Crucially, you MUST reference the specific exported mockups in the `## Reference Mockups` section with the path to the `.html` file.
+   > 3. **Reference Mockups (CRITICAL RULES)**: When generating tickets, explicitly instruct the AI agent executing the ticket that if a `## Reference Mockups` section exists, it MUST read the specified `.html` mockup file and base its Flutter implementation EXACTLY on that mockup. It should not invent generic UI if a mockup is provided.
+   > 4. **Traceability**: Each ticket's `design/README.md` MUST include a direct link to its corresponding exported mockup in standard Markdown format.
+   > 5. **Structure**: Each ticket must follow the standard phase-based structure (Requirements -> Design -> Planning -> Implementation -> Testing).
+   > 6. **Sync**: Read `project-management/design/screen_list.md` and explicitly link the generated tickets to the specific screens by updating their `- **Ticket**: T-XXX` field.
+   > 7. **Gap Handling**: If the generated screens in Stitch reveal a missing user flow, or if there is a gap between the documented requirements and the available exported mockups, you MUST identify this gap. Provide instructions to the human to generate the necessary missing screens in Stitch, and update both the `requirements/README.md` and `design/README.md` to ensure they are fully synced and mapped.
+   > 8. **Completeness**: Break down the entire Epic into manageable, sequential tickets.
    >
    > Do not start implementation yet. Focus exclusively on generating the full documentation for this Epic's tickets first."
 
@@ -99,6 +100,7 @@ After the strategic planning and high-fidelity design phases are complete, we mo
 The coding phase where the application comes to life.
 
 - **One-by-One**: Work on tickets sequentially. ask the AI agent to "start working on T-001" and wait for it to finish before moving to T-002.
+- **Reference Mockup Implementation (CRITICAL)**: If a ticket's `design/README.md` contains a `## Reference Mockups` section with paths to `.html` mockups, the AI MUST read those specific HTML files and implement the UI to match them exactly. Do not allow the AI to invent boilerplate UI if a mockup exists.
 - **Manual Verification**: You must verify every feature against the ticket's success criteria.
 
 ---
