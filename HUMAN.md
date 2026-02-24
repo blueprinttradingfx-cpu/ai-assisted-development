@@ -43,39 +43,15 @@ Put this new files on `project-management/project/`.
 
 ---
 
-### 2. Design Bible (Planning)
+### 2. Design Phase (Planning & Prep)
 
-Before coding, lets define the "How it Feels" in `project-management/design/`.
+Before coding, define the visual and behavioral foundation of your project. This includes creating the "Design Bible" and generating high-fidelity mockups.
 
-Tag the Project Foundation Folder `project-management/project/` and design bible template folder `project-management/design_template` then use this prompt with your AI Coding agent e.g. Antigravity, Claude Code, Codex:
-
-```markdown
-I want to create a Design Bible for my project.
-
-Act as a Senior UI/UX Designer. Your goal is to help me define the design foundation by filling out `project-management/design/` using the templates provided in `project-management/design_template/`.
-
-**IMPORTANT**: Do NOT update the files in `project-management/design_template/`. Use them only as a reference to create the final files in `project-management/design/`.
-
-Please interview me to gather all necessary details. Ask questions covering:
-
-- **Sitemap**: Navigation and screen hierarchy.
-- **Style Guide**: Visual tokens (Colors, Type, "Chunky UI").
-- **Interaction Guide**: Behavioral rules (Guardrails, Feedback loops).
-- **Content Strategy**: Voice, tone, and nomenclature for Parents and Children.
-- **Component Specs**: The visual "Kit of Parts".
-```
+See **[design.md](./project-management/design/design.md)** for detailed instructions, AI prompts, and the Stitch workflow.
 
 ---
 
-### 3. Design Prep (Screen Generation)
-
-Use tools like **Stitch** to bridge the gap between planning and implementation.
-See [design.md](./project-management/design/design.md) for detailed instructions.
-
-- **Generate**: Use the Design Bible to prompt Stitch for high-fidelity mockups.
-- **Export**: Save exported mockups back into structured subfolders within `design/`.
-
-### 4. Ticket Generation (Alignment)
+### 3. Ticket Generation (Alignment)
 
 After the strategic planning and high-fidelity design phases are complete, we move to **Epic Scoping**. Instead of generating 100+ tickets at once, we focus on scoping the technical roadmap for a specific **Epic** (as defined in `epic_backlogs.md`).
 
@@ -105,7 +81,7 @@ After the strategic planning and high-fidelity design phases are complete, we mo
 
 4. **Execution Workflow**: Once the full set of tickets for **ALL epics** is validated and in the backlog, development begins: **Work on tickets one-by-one sequentially.** (Ask the AI agent to "start working on T-001" and wait for it to finish before moving to T-002).
 
-### 5. Execution (Implementation & Testing)
+### 4. Execution (Implementation & Testing)
 
 The coding phase where the application comes to life.
 
