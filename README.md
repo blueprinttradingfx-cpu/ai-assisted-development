@@ -20,7 +20,7 @@ When an AI agent starts work, it **MUST** follow the standardized lifecycle defi
 ## 🏗️ Project Structure
 
 - **[project-management/](./project-management/)**: The Source of Truth.
-  - `project/`: Foundation files (Vision, PRD, Epic Backlog).
+  - `project/`: Foundation files (Vision, PRD, FRD, Epic Backlog).
   - `design/`: The Design Bible (Sitemap, Style Guide, Interaction Specs).
   - `tickets/`: Active development tasks with full phase documentation.
 - **[web-applications/](./web-applications/)**: Core application codebases.

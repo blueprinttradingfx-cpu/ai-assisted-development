@@ -4,10 +4,11 @@
 
 This project uses ai-devkit for structured AI-assisted development. Phase documentation is located within each ticket folder in `project-management/tickets/T-XXX/`. The core codebase is consolidated under `web-applications/`, shared assets are in `packages/`, and custom AI instructions are in `skills/`.
 
-### Element TD Project Rules
+### Project Rules
 
-- **Source of Truth**: Always reference `project-management/project/vision.md` (End Goal) and `project-management/project/PRD.md` (Roadmap) when working on the tasks.
-- **Hallucination Prevention**: Verify all task mechanics and rules against `PRD.md` or the PRD.md before implementation.
+- **Source of Truth**: Always reference the **Project Foundation** (`vision.md`, `PRD.md`, `FRD.md`, `epic_backlogs.md`) and the **Design Bible** (`project-management/design/sitemap.md`, `style_guide.md`, `interaction_guide.md`, etc.) when working on tasks.
+- **Directory Constraint**: All application code, scripts, and feature implementation MUST reside within the `web-applications/` directory.
+- **Hallucination Prevention**: Verify all task mechanics and rules against the core project docs and exported high-fidelity mockups before implementation.
 
 ## Documentation Structure
 
@@ -21,9 +22,10 @@ This project uses ai-devkit for structured AI-assisted development. Phase docume
 
 ## Code Style & Standards
 
-- Follow the project's established code style and conventions
-- Write clear, self-documenting code with meaningful variable names
-- Add comments for complex logic or non-obvious decisions
+- Follow the project's established code style and conventions.
+- Write clear, self-documenting code with meaningful variable names.
+- **Faithful Translation**: Do not use "default" component styles if the high-fidelity mockups in `project-management/design/` specify custom tokens. Extract exact values for padding, margins, colors, and effects.
+- Add comments for complex logic or non-obvious decisions.
 
 ## Development Workflow
 
@@ -57,9 +59,12 @@ Before starting, categorize the ticket to choose the most efficient **Workflow T
 
 ## AI Interaction Guidelines
 
-- When implementing features, first check relevant phase documentation
-- For new features, start with requirements clarification
-- Update phase docs when significant changes or decisions are made
+- When implementing features, first check relevant phase documentation and high-fidelity mockups.
+- **Epic Scoping**: If tasked with a new Epic, follow the iterative scoping workflow: generate documentation (Requirements -> Design -> Planning) for the entire Epic's tickets BEFORE starting any implementation.
+- **Human Collaboration**: Respect the human operator's role as project manager. Always wait for explicit approval on the `implementation_plan.md` before writing production code.
+- **Design Alignment**: Every ticket MUST be anchored to the Design Bible. Ensure implementation matches the behavior and visuals defined in the interaction guide and style guide.
+- **Backlog Duty**: Proactively suggest tasks from the `backlog.md` if the current objective is met.
+- Update phase docs when significant changes or decisions are made.
 
 ## Skills (Extend Your Capabilities)
 
