@@ -51,7 +51,17 @@ See **[design.md](./project-management/design/design.md)** for detailed instruct
 
 ---
 
-### 3. Ticket Generation (Alignment)
+### 3. Screen Alignment (The Living Screen List)
+
+Before asking the AI to write any code or draft any tickets, you must align the generated designs with your Epics.
+
+1. **The Screen List**: Open `project-management/design/screen_list.md`.
+2. **Update Status**: For every screen you exported from Stitch, check the box `[x] Generated`.
+3. **Map to Epics**: Ensure every generated screen is logically grouped under the correct Epic heading within `screen_list.md`. This is the critical handoff point between Design and Implementation.
+
+---
+
+### 4. Ticket Generation (Alignment)
 
 After the strategic planning and high-fidelity design phases are complete, we move to **Epic Scoping**. Instead of generating 100+ tickets at once, we focus on scoping the technical roadmap for a specific **Epic** (as defined in `epic_backlogs.md`).
 
@@ -69,7 +79,9 @@ After the strategic planning and high-fidelity design phases are complete, we mo
    > 2. **Design Fidelity**: Every ticket's design MUST follow the **Design Bible** (Sitemap, Style Guide, Interaction Guide, etc.) and reference the specific exported mockups in the design folder.
    > 3. **Traceability**: Each ticket's `design/README.md` MUST include a direct link to its corresponding exported mockup (e.g., `Reference Mockup: project-management/design/FeatureName/index.html`).
    > 4. **Structure**: Each ticket must follow the standard phase-based structure (Requirements -> Design -> Planning -> Implementation -> Testing).
-   > 5. **Completeness**: Break down the entire Epic into manageable, sequential tickets.
+   > 5. **Sync**: Read `project-management/design/screen_list.md` and explicitly link the generated tickets to the specific screens by updating their `- **Ticket**: T-XXX` field.
+   > 6. **Gap Handling**: If the generated screens in Stitch reveal a missing user flow, or if there is a gap between the documented requirements and the available exported mockups, you MUST identify this gap. Provide instructions to the human to generate the necessary missing screens in Stitch, and update both the `requirements/README.md` and `design/README.md` to ensure they are fully synced and mapped.
+   > 7. **Completeness**: Break down the entire Epic into manageable, sequential tickets.
    >
    > Do not start implementation yet. Focus exclusively on generating the full documentation for this Epic's tickets first."
 
@@ -77,6 +89,7 @@ After the strategic planning and high-fidelity design phases are complete, we mo
 3. **Validation & Iteration**: Check each ticket's `requirements/README.md` and `design/README.md`.
    - Ensure they reference the correct functional requirements from the FRD.
    - **CRITICAL**: Verify that each ticket contains a file path link to its relevant design mockup index.
+   - **Ticket Sync Status**: Verify that the AI correctly updated the `- **Ticket**: T-XXX` field for the relevant screens in `screen_list.md`.
    - **Iterate**: Once the current epic is fully scoped and validated, move to the next epic in `epic_backlogs.md` until the entire project is mapped.
 
 4. **Execution Workflow**: Once the full set of tickets for **ALL epics** is validated and in the backlog, development begins: **Work on tickets one-by-one sequentially.** (Ask the AI agent to "start working on T-001" and wait for it to finish before moving to T-002).

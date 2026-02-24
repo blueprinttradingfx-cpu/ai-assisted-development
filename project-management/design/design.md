@@ -43,18 +43,26 @@ Once generated, review and refine these files to ensure they perfectly capture y
 ### 2. Screen Generation (Stitch)
 
 1. Go to [https://stitch.withgoogle.com/](https://stitch.withgoogle.com/) and create/open your project.
-2. **Context Upload**: Upload the **Project Foundation Files:** **Vision**, **PRD**, **FRD**, **epic_backlogs.md**, and the **Design Bible** files listed above. This ensures Stitch has the same mental model as the development team.
-3. **Prompting**: Use the Sitemap to ask Stitch to generate all the necessary screens base on the design bible.
-   - _Example_: "Generate all the necessary screens for the project based on the Sitemap and Design Bible."
-4. **Refinement**: Iterate on the screens in Stitch until they match the success criteria in the PRD.
 
-### 3. Export & Integration
+To minimize hallucinations and ensure high-fidelity output, we use a focused, one-by-one generation approach.
+
+1. **Upload Visual Foundation**: Upload the **`style_guide.md`**. This is the **ONLY** file needed for visual context. It contains the look, feel, palette, and ambiance rules.
+2. **Context Prompt**:
+   > "I have provided the `style_guide.md` which defines the 'Creative Garden' ambiance and visual tokens for my project. Use this for all UI elements.
+   >
+   > I want to generate screens **one-by-one**. Please wait for my specific screen request from the `screen_list.md`."
+3. **Generate One-by-One**: Refer to **`screen_list.md`** and ask Stitch to generate each screen individually.
+   - _Example_: "Based on the Style Guide, generate the **Activity Launcher** screen. It should feature a grid of activities for a child named Leo, using the 'Chunky UI' style and Green/Blue palette."
+4. **Refinement**: Iterate on each screen until it perfectly matches the vision.
+
+### 3. Export & Integration Tracking
 
 Once the designs are ready:
 
-1. **Export Code**: Click the screen > select "more" > "view code" - this will show the html code for the screen. Copy this code and save it in the appropriate folder in `project-management/design/` (e.g., `design/Parent Management Dashboard/`).
-2. **Organization**: Create a subfolder for each major feature in `project-management/design/` (e.g., `design/Parent Management Dashboard/`).
+1. **Export Code**: Click the screen > select "more" > "view code" - this will show the html code for the screen. Copy this code and save it in the appropriate folder in `project-management/design/` (e.g., `design/11. Parent Dashboard/`).
+2. **Organization**: Create a subfolder for each major feature in `project-management/design/`.
 3. **Save Index**: Place the `index.html` and any exported assets in these subfolders.
+4. **Update the Tracker**: Go to `project-management/design/screen_list.md` and check the box `[x] Generated` for the specific screen you just exported. This prevents orphan screens from being lost.
 
 ## 💡 Why This Works (For the Next Human)
 
