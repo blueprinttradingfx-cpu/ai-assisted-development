@@ -2,26 +2,111 @@
 
 This guide is for the human operator managing the AI DevKit ecosystem. Your role is to act as the **Orchestrator** and **Source of Truth** for the project.
 
-## 🧠 Your Core Responsibilities
+---
 
-As the human in the loop, you are responsible for the "Why" and the "What", while the AI handles the "How".
+## 🔄 The Full Development Cycle
 
-1.  **Guarding the Brain**: Maintaining the core source of truth files in `project-management/project/`.
-2.  **Backlog Management**: Converting your ideas into structured "Raw Ideas" in the backlog.
-3.  **Checkpoint Reviews**: Critically reviewing AI-generated designs and plans before execution.
-4.  **Verification**: Validating that the implemented feature actually solves your problem.
+This framework follows a rigorous, document-driven lifecycle to ensure total alignment between your intent and the AI's execution.
+
+### 1. Source of Truth (Foundation)
+
+All strategic direction is housed in `project-management/project/`.
+
+| File                   | Human's Job                                                                                                                  |
+| :--------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
+| **`vision.md`**        | Keep the "North Star" clear. Define the values and ultimate success state.                                                   |
+| **`PRD.md`**           | **PRD**: Product Requirements (Scope, Personas, and Roadmap). Define the boundaries of what is "In Scope" vs "Out of Scope". |
+| **`FRD.md`**           | Define specific user interactions and persona-based capabilities.                                                            |
+| **`epic_backlogs.md`** | Manage the breakdown of features. Ensure epics are logically structured.                                                     |
+| **`backlog.md`**       | New unscoped ideas to refine into tickets.                                                                                   |
+
+Choose if you are starting a new project or resuming work on an existing project.
+
+## 🚀 Starting a New Project
+
+To initialize a new project, use this prompt with an AI Architect:
+
+```markdown
+I am using the AI-Assisted Development Framework to build a new project.
+
+Act as a Senior Solution Architect. Your goal is to help me define the project foundation by filling out `vision.md`, `PRD.md`, `FRD.md`, and `epic_backlogs.md`.
+
+Please interview me to gather all necessary details. Ask questions covering:
+
+1. The core vision and "Why" behind the project.
+2. Target audience and key problems being solved.
+3. High-level feature roadmap (MVP and beyond).
+4. Technical constraints or preferences.
+```
+
+## 🔄 Resuming Work
+
+To resume work on an existing project, use this prompt:
+
+```markdown
+I want to continue development on my project in `web-applications/` using the AI-Assisted Development Framework.
+
+1. Read and analyze the existing project files: `vision.md`, `PRD.md`, `FRD.md`, `epic_backlogs.md`, and `backlog.md`.
+2. Perform a "Gap Analysis" against the current codebase.
+3. Propose the next logical tickets from the `backlog.md`.
+```
 
 ---
 
-## 🗺️ The Project Foundation
+### 2. Design Bible (Planning)
 
-Always keep these three files aligned. If you change your mind about the project direction, update these FIRST.
+Before coding, define the "How it Feels" in `project-management/design/`.
 
-| File                   | Human's Job                                                                        |
-| :--------------------- | :--------------------------------------------------------------------------------- |
-| **`vision.md`**        | Keep the "North Star" clear. Define the values and ultimate success state.         |
-| **`PRD.md`**           | Update the roadmap. Define the boundaries of what is "In Scope" vs "Out of Scope". |
-| **`epic_backlogs.md`** | Manage the breakdown of features. Ensure epics are logically structured.           |
+- **Sitemap**: Navigation and screen hierarchy.
+- **Style Guide**: Visual tokens (Colors, Type, "Chunky UI").
+- **Interaction Guide**: Behavioral rules (Guardrails, Feedback loops).
+- **Content Strategy**: Voice, tone, and nomenclature for Parents and Children.
+- **Component Specs**: The visual "Kit of Parts".
+
+### 3. Design Prep (Screen Generation)
+
+Use tools like **Stitch** to bridge the gap between planning and implementation.
+See [design.md](./project-management/design/design.md) for detailed instructions.
+
+- **Generate**: Use the Design Bible to prompt Stitch for high-fidelity mockups.
+- **Export**: Save exported mockups back into structured subfolders within `design/`.
+
+### 4. Ticket Generation (Alignment)
+
+After the strategic planning and high-fidelity design phases are complete, we move to **Epic Scoping**. Instead of generating 100+ tickets at once, we focus on scoping the technical roadmap for a specific **Epic** (as defined in `epic_backlogs.md`).
+
+**The Goal**: Iterate through ALL epics in `epic_backlogs.md` and generate their corresponding tickets BEFORE starting any feature implementation.
+
+1. **Inform the AI**: Use this comprehensive prompt to ensure total alignment for the chosen Epic. **Repeat this for EACH epic in your backlog until the entire project is mapped out.**
+
+   > **Prompt**: "I have completed the strategic planning and exported the final designs into `project-management/design/`.
+   >
+   > Your task is to **scope and generate all implementation tickets** (T-XXX to T-XXX) required to build the specific Epic: **[EPIC NAME]**.
+   >
+   > **Requirements for Scoping:**
+   >
+   > 1. **Alignment**: Every ticket's requirements MUST be anchored to the **Project Foundation** (Vision, PRD, FRD, Epic Backlog).
+   > 2. **Design Fidelity**: Every ticket's design MUST follow the **Design Bible** (Sitemap, Style Guide, Interaction Guide, etc.) and reference the specific exported mockups in the design folder.
+   > 3. **Traceability**: Each ticket's `design/README.md` MUST include a direct link to its corresponding exported mockup (e.g., `Reference Mockup: project-management/design/FeatureName/index.html`).
+   > 4. **Structure**: Each ticket must follow the standard phase-based structure (Requirements -> Design -> Planning -> Implementation -> Testing).
+   > 5. **Completeness**: Break down the entire Epic into manageable, sequential tickets.
+   >
+   > Do not start implementation yet. Focus exclusively on generating the full documentation for this Epic's tickets first."
+
+2. **Scoping**: Review the AI's proposed ticket list. Ensure it covers the end-to-end user journey defined in the Sitemap.
+3. **Validation & Iteration**: Check each ticket's `requirements/README.md` and `design/README.md`.
+   - Ensure they reference the correct functional requirements from the FRD.
+   - **CRITICAL**: Verify that each ticket contains a file path link to its relevant design mockup index.
+   - **Iterate**: Once the current epic is fully scoped and validated, move to the next epic in `epic_backlogs.md` until the entire project is mapped.
+
+4. **Execution Workflow**: Once the full set of tickets for **ALL epics** is validated and in the backlog, development begins: **Work on tickets one-by-one sequentially.** (Ask the AI agent to "start working on T-001" and wait for it to finish before moving to T-002).
+
+### 5. Execution (Implementation & Testing)
+
+The coding phase where the application comes to life.
+
+- **One-by-One**: Work on tickets sequentially. ask the AI agent to "start working on T-001" and wait for it to finish before moving to T-002.
+- **Manual Verification**: You must verify every feature against the ticket's success criteria.
 
 ---
 
@@ -43,18 +128,18 @@ Ask your AI agent:
 
 ---
 
-## 🚦 Handling Checkpoints
+## 🚦 Handling Checkpoints (Decision Making)
 
-The AI is instructed to stop and ask for your approval at major phases:
+The AI is instructed to stop and ask for your approval at major phases. **Never skip these.**
 
 ### 📑 Plan Approval (`implementation_plan.md`)
 
 - **Look for**: Complexity, new dependencies, and "User Review Required" alerts.
-- **Action**: Say "Approved" or provide feedback to refine the approach.
+- **Action**: Use the `/execute-plan` workflow if approved, or provide feedback.
 
 ### 📐 Design Approval
 
-- **Look for**: Architectural changes that might impact other parts of the monorepo.
+- **Look for**: Architectural changes that might impact the monorepo.
 - **Action**: Ensure the design aligns with your `PRD.md`.
 
 ---
@@ -63,14 +148,17 @@ The AI is instructed to stop and ask for your approval at major phases:
 
 When the AI says a task is `DONE`:
 
-1.  **Review the `walkthrough.md`**: Look at the screenshots or terminal output.
-2.  **Manual Test**: Try the feature yourself in the `web-applications/` directory.
-3.  **Completion**: Update the `backlog.md` status to `✅ Verified`.
+1. **Review the `walkthrough.md`**: Look at the logic and visual proofs.
+2. **Manual Test**: Try the feature yourself in the `web-applications/` directory.
+3. **Completion**: Update the `backlog.md` status to `✅ Verified`.
 
 ---
 
 ## 🚩 Rules for Success
 
-- **Put projects in `web-applications/`**: Always initialize or move your application code here.
-- **Never bypass the plan**: If the AI starts coding without a plan, stop it and ask for the `implementation_plan.md`.
-- **Be the Tie-Breaker**: If two agents (or an agent and a skill) conflict, your decision is the law.
+- **Stay in `web-applications/`**: Always anchor your code here.
+- **Guarding the Brain**: If the AI proposes a change that conflicts with the `vision.md`, reject it.
+- **Be the Tie-Breaker**: You are the final authority on project decisions.
+
+> [!TIP]
+> **Domain-Specific Rules**: After setting up your project in `web-applications/`, ask the AI agent to: _"Create a project domain-level agent workflow and specialized rules in `.agent/rules/` based on the [Tech Stack] and best practices."_ This ensures the AI follows industry standards for your specific framework (e.g., Flutter, React, TDD).
