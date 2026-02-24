@@ -24,10 +24,10 @@ Choose if you are starting a new project or resuming work on an existing project
 
 ## 🚀 Starting a New Project
 
-To initialize a new project, use this prompt with an AI Architect:
+To initialize a new project, upload the files from the Project Foundation Folder `project-management/project_template` use this prompt with an AI Architect e.g chatGPT, grok, Gemini or Claude:
 
 ```markdown
-I am using the AI-Assisted Development Framework to build a new project.
+I am using the [AI-Assisted Development Framework](https://github.com/blueprinttradingfx-cpu/ai-assisted-development) to build a new project.
 
 Act as a Senior Solution Architect. Your goal is to help me define the project foundation by filling out `vision.md`, `PRD.md`, `FRD.md`, and `epic_backlogs.md`.
 
@@ -39,29 +39,33 @@ Please interview me to gather all necessary details. Ask questions covering:
 4. Technical constraints or preferences.
 ```
 
-## 🔄 Resuming Work
-
-To resume work on an existing project, use this prompt:
-
-```markdown
-I want to continue development on my project in `web-applications/` using the AI-Assisted Development Framework.
-
-1. Read and analyze the existing project files: `vision.md`, `PRD.md`, `FRD.md`, `epic_backlogs.md`, and `backlog.md`.
-2. Perform a "Gap Analysis" against the current codebase.
-3. Propose the next logical tickets from the `backlog.md`.
-```
+Put this new files on `project-management/project/`.
 
 ---
 
 ### 2. Design Bible (Planning)
 
-Before coding, define the "How it Feels" in `project-management/design/`.
+Before coding, lets define the "How it Feels" in `project-management/design/`.
+
+Tag the Project Foundation Folder `project-management/project/` and design bible template folder `project-management/design_template` then use this prompt with your AI Coding agent e.g. Antigravity, Claude Code, Codex:
+
+```markdown
+I want to create a Design Bible for my project.
+
+Act as a Senior UI/UX Designer. Your goal is to help me define the design foundation by filling out `project-management/design/` using the templates provided in `project-management/design_template/`.
+
+**IMPORTANT**: Do NOT update the files in `project-management/design_template/`. Use them only as a reference to create the final files in `project-management/design/`.
+
+Please interview me to gather all necessary details. Ask questions covering:
 
 - **Sitemap**: Navigation and screen hierarchy.
 - **Style Guide**: Visual tokens (Colors, Type, "Chunky UI").
 - **Interaction Guide**: Behavioral rules (Guardrails, Feedback loops).
 - **Content Strategy**: Voice, tone, and nomenclature for Parents and Children.
 - **Component Specs**: The visual "Kit of Parts".
+```
+
+---
 
 ### 3. Design Prep (Screen Generation)
 
@@ -107,6 +111,35 @@ The coding phase where the application comes to life.
 
 - **One-by-One**: Work on tickets sequentially. ask the AI agent to "start working on T-001" and wait for it to finish before moving to T-002.
 - **Manual Verification**: You must verify every feature against the ticket's success criteria.
+
+---
+
+## 🔄 Adopting the Framework (Existing Projects)
+
+If you have an existing project (possibly already deployed) and want to adopt this AI-Assisted Development Framework for future scaling and maintenance, follow these steps. You do **not** need to redo the discovery interviews, but you must "anchor" the AI to your current codebase first.
+
+### 1. Retrofit the Foundation
+
+Manually fill out (or ask an AI to analyze the code and help you fill out) the files in `project-management/project/` based on your **existing app's current state**. This ensures the AI knows the "laws" of your project before it starts proposing changes.
+
+### 2. Retrofit the Design Bible
+
+Document your **existing UI patterns** in `project-management/design/` (using the design templates). This prevents the AI from introducing "design drift" when building new features.
+
+### 3. Initialize the AI Workflow
+
+Use this prompt with your AI Coding agent to align it with the codebase and start the structured implementation cycle:
+
+```markdown
+I am adopting the AI-Assisted Development Framework for this existing project in `web-applications/`.
+
+1. **Analysis**: Read and analyze the current codebase and the foundation files in `project-management/project/` and `project-management/design/`.
+2. **Gap Analysis**: Perform a comparison between the existing source code and the documented PRD/FRD.
+3. **Workflow Shift**: Moving forward, we will use the **Epic Scoping** workflow for all new work.
+4. **Backlog Refinement**: Propose the next logical features/tickets for the `backlog.md`.
+5. **Alignment**: Ensure all new tickets are anchored to the existing codebase and the newly created PRD/FRD.
+6. **Standards**: Interview me about the **Coding Standards** used in this project and help me generate specialized **Domain-Specific Rules** in `.agent/rules/`.
+```
 
 ---
 
