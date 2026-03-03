@@ -1,6 +1,4 @@
-# Design Workflow & Human Instructions
-
-This document guides the human operator through the **Design Prep** and **Screen Generation** phases of the KidDraw Learn project.
+This document guides the human operator through the **Design Prep** and **Screen Generation** phases of the Tita Chi project.
 
 ## 🏹 The Goal
 
@@ -24,9 +22,9 @@ Act as a Senior UI/UX Designer. Your goal is to help me define the design founda
 Please interview me to gather all necessary details. Ask questions covering:
 
 - **Sitemap**: Navigation and screen hierarchy.
-- **Style Guide**: Visual tokens (Colors, Type, "Chunky UI").
+- **Style Guide**: Visual tokens (Colors, Type, UI).
 - **Interaction Guide**: Behavioral rules (Guardrails, Feedback loops).
-- **Content Strategy**: Voice, tone, and nomenclature for Parents and Children.
+- **Content Strategy**: Voice, tone, and nomenclature for Users.
 - **Component Specs**: The visual "Kit of Parts".
 ```
 
@@ -35,25 +33,24 @@ Please interview me to gather all necessary details. Ask questions covering:
 Once generated, review and refine these files to ensure they perfectly capture your creative vision:
 
 - `sitemap.md`: Navigation and screen hierarchy.
-- `style_guide.md`: Colors, Typography, and "Chunky UI" rules.
+- `style_guide.md`: Colors, Typography, and UI rules.
 - `interaction_guide.md`: Behavioral rules (Guardrails, Feedback loops).
-- `content_strategy.md`: Voice, tone, and nomenclature for Parents and Children.
+- `content_strategy.md`: Voice, tone, and nomenclature for Users.
 - `ui_components.md`: The "Kit of Parts" for visual consistency.
 
 ### 2. Screen Generation (Stitch)
 
 1. Go to [https://stitch.withgoogle.com/](https://stitch.withgoogle.com/) and create/open your project.
-
-To minimize hallucinations and ensure high-fidelity output, we use a focused, one-by-one generation approach.
-
-1. **Upload Visual Foundation**: Upload the **`style_guide.md`**. This is the **ONLY** file needed for visual context. It contains the look, feel, palette, and ambiance rules.
-2. **Context Prompt**:
-   > "I have provided the `style_guide.md` which defines the 'Creative Garden' ambiance and visual tokens for my project. Use this for all UI elements.
-   >
-   > I want to generate screens **one-by-one**. Please wait for my specific screen request from the `screen_list.md`."
-3. **Generate One-by-One**: Refer to **`screen_list.md`** and ask Stitch to generate each screen individually.
+2. **Use the Ideate Mode**.
+3. **Context Prompt**: Tell Stitch to don't generate screens yet and let you tell it the requirements, database schema, and user flow. Use this prompt:
+   > "I will provide the `vision` and `style_guide` which defines the ambiance and visual tokens for my project. Use this for all UI elements. I want to generate screens **one-by-one**. Please wait for my specific screen request from the `user_flow`."
+4. **Context Provisioning**:
+   - First paste the **`vision.md`**.
+   - Then paste the **`style_guide.md`**.
+   - Then paste the **`user_flow.md`**.
+5. **Generate One-by-One**: Refer to **`user_flow.md`** (or `screen_list.md`) and ask Stitch to generate each screen individually.
    - _Example_: "Based on the Style Guide, generate the **Activity Launcher** screen. It should feature a grid of activities for a child named Leo, using the 'Chunky UI' style and Green/Blue palette."
-4. **Refinement**: Iterate on each screen until it perfectly matches the vision.
+6. **Refinement**: Iterate on each screen until it perfectly matches the vision.
 
 ### 3. Export & Integration Tracking
 

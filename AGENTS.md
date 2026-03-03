@@ -6,7 +6,7 @@ This project uses ai-devkit for structured AI-assisted development. Phase docume
 
 ### Project Rules
 
-- **Source of Truth**: Always reference the **Project Foundation** (`vision.md`, `PRD.md`, `FRD.md`, `epic_backlogs.md`) and the **Design Bible** (`project-management/design/sitemap.md`, `style_guide.md`, `interaction_guide.md`, etc.) when working on tasks.
+- **Source of Truth**: Always reference the **Project Foundation** (`vision.md`, `PRD.md`, `FRD.md`, `epic_backlogs.md`, `system_architecture.md`) and the **Design Bible** (`project-management/design/sitemap.md`, `style_guide.md`, `interaction_guide.md`, `user_flow.md`, etc.) when working on tasks.
 - **Directory Constraint**: All application code, scripts, and feature implementation MUST reside within the `web-applications/` directory.
 - **Hallucination Prevention**: Verify all task mechanics and rules against the core project docs and exported high-fidelity mockups before implementation.
 
@@ -55,12 +55,19 @@ Before starting, categorize the ticket to choose the most efficient **Workflow T
 - **Read the Backlog**: Check `project-management/backlog.md` to understand current priorities.
 - **Backlog Update**: Move/Link the item in `backlog.md` under **🔍 Ready for Review** when starting.
 - **Approval**: **Wait for explicit approval** on plans/designs before code execution.
-- **Completion**: update `backlog.md` to **✅ Verified** when confirmed.
+- **Epic Mastery**: At the end of every finished epic, perform a gap analysis: "Let's review the latest finished epic and find the gaps from requirements and what's implemented."
+- **No-Gap Policy**: Never start a new epic if there are unresolved gaps between requirements, designs, database, or current implementation in the previous epic.
+- **Completion**: Update `backlog.md` to **✅ Verified** when confirmed.
 
 ## AI Interaction Guidelines
 
-- When implementing features, first check relevant phase documentation and high-fidelity mockups.
-- **Reference Mockup Implementation (CRITICAL)**: If a ticket's `design/README.md` contains a `## Reference Mockups` section with paths to `.html` mockups, you MUST read those specific HTML files and implement the Flutter UI to match them exactly (including extracting correct layout, typography, structure, and visual tokens). Do not invent boilerplate UI if a mockup exists.
+- **Context First**: Before creating a implementation plan, ensure the feature has a documented **User Flow**. If missing, ask the human to brainstorm the story (from loading screen to journey end). Once created, sync requirements and database schema to the user flow. Use `project-management/design_template/user_flow.md` as a base.
+- **Reference Mockup Implementation (CRITICAL)**: If a ticket's `design/README.md` contains a `## Reference Mockups` section with paths to `.html` mockups, you MUST read those specific HTML files and implement the Flutter UI to match them. Note that the designs are for inspiration only and not to be followed exactly; you may need to add additional fields, buttons, or data based on the database schema and requirements. Do not invent boilerplate UI if a mockup exists, but ensure it meets all functional needs.
+- **Stitch Interaction Guidelines**: When generating screen designs from Stitch:
+  1. Use the **Ideate Mode**.
+  2. Instruct Stitch to wait: "I will provide the `vision` and `style_guide` which defines the ambiance and visual tokens for my project. Use this for all UI elements. I want to generate screens **one-by-one**. Please wait for my specific screen request from the `user_flow`."
+  3. Sequence: Paste `vision.md` → `style_guide.md` → `user_flow.md`.
+  4. Generate screens one-by-one as requested.
 - **Epic Scoping**: If tasked with a new Epic, follow the iterative scoping workflow: generate documentation (Requirements -> Design -> Planning) for the entire Epic's tickets BEFORE starting any implementation.
 - **Human Collaboration**: Respect the human operator's role as project manager. Always wait for explicit approval on the `implementation_plan.md` before writing production code.
 - **Design Alignment**: Every ticket MUST be anchored to the Design Bible. Ensure implementation matches the behavior and visuals defined in the interaction guide and style guide.
@@ -154,6 +161,7 @@ When working on this project, you can run commands to:
 - Perform structured code reviews (`code-review`)
 - Log salient changes (`/log`)
 - Product discovery (`/discover`)
+- Gap Analysis (`/check-implementation`)
 - Task epic planning (`/task`)
 
 ## Activity Log Requirement
