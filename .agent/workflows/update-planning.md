@@ -14,7 +14,7 @@ Ask me for:
 - Tasks completed since last update
 - Any new tasks discovered
 - Current blockers or risks
-- Relevant planning docs (e.g., `project-management/tickets/T-{name}/planning/planning.md`)
+- Relevant planning docs (e.g., `project-management/epics/[EPIC-NAME]/tickets/T-{name}/planning/README.md`)
 
 ## Step 2: Review Planning Doc
 

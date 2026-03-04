@@ -2,7 +2,7 @@
 description: Compare implementation with design and requirements docs to ensure alignment.
 ---
 
-Compare the current implementation with the design in `project-management/tickets/T-XXX/design/` and requirements in `project-management/tickets/T-XXX/requirements/`. Please follow this structured review:
+Compare the current implementation with the design in `project-management/epics/[EPIC-NAME]/tickets/T-XXX/design/` and requirements in `project-management/epics/[EPIC-NAME]/tickets/T-XXX/requirements/`. Please follow this structured review:
 
 1. Ask me for:
    - Feature/branch description

@@ -2,7 +2,7 @@
 
 ## Project Context
 
-This project uses ai-devkit for structured AI-assisted development. Phase documentation is located within each ticket folder in `project-management/tickets/T-XXX/`. The core codebase is consolidated under `web-applications/`, shared assets are in `packages/`, and custom AI instructions are in `skills/`.
+This project uses ai-devkit for structured AI-assisted development. Phase documentation is located within each ticket folder in `project-management/epics/EPIC-NAME/tickets/T-XXX/`. The core codebase is consolidated under `web-applications/`, shared assets are in `packages/`, and custom AI instructions are in `skills/`.
 
 ### Project Rules
 
@@ -29,40 +29,50 @@ This project uses ai-devkit for structured AI-assisted development. Phase docume
 
 ## Development Workflow
 
-Before starting, categorize the ticket to choose the most efficient **Workflow Track**:
+This project operates on a rigorous **Two-Layer Workflow** separating developer velocity from release hardening.
 
-### 📊 Decision Matrix
+### 🚀 Layer 1: Ticket-Level Flow (Developer Velocity)
 
-- **Track A (Lean)**: Bug fixes, minor UI tweaks, or single-file logic updates. (Touches < 3 files)
-- **Track B (Full)**: New features, architectural changes, or complex refactors. (Touches >= 3 files or adds new tables/API endpoints)
+This track is localized to `feature/*` branches and focuses purely on fast execution. No deployment or security theater.
 
-### 🔄 Workflow Track A: Lean (Small/Medium)
+**Workflow:** `Ideation → Ticket → Requirements → Design → Implementation → Testing → Merge (to Epic branch)`
 
-1. **Initialize**: Create `tickets/T-XXX/` folder. Copy only `TEMPLATE-implementation_plan.md` to the root as `implementation_plan.md`.
-2. **Plan**: Use headers in `implementation_plan.md` (Requirements, Design, Plan) to document the approach concisely.
-3. **Execute**: Create `tasks.md` in the root and implement.
-4. **Finalize**: Set `**Status**: [DONE]` and update `backlog.md`.
+1. **Initialize**: Create ticket folders inside isolated Epic folders (e.g., `/project-management/epics/epic-001/tickets/T-XXX/`).
+2. **Execute**: Implement the feature. Tests here mean Component Unit Tests, linting, and manual local validation.
+3. **Autonomous Bug Fixing**: If executing a bug fix, skip the heavy Requirements/Design phases. Proceed straight to identifying the failing log, fixing the code, writing the test, and merging.
+4. **Finalize**: Test-Driven Execution dictates you MUST paste passing CLI output before marking `[DONE]`. Update the local ticket `metadata.json`.
 
-### 🔄 Workflow Track B: Full (Major Features)
+### 🛡️ Layer 2: Epic-Level Flow (Release Hardening)
 
-1. **Initialize**: Create `tickets/T-XXX/` and all subfolders (`requirements/`, `design/`, etc.) from `ticket_templates/`.
-2. **Phase-Based Execution**: Strictly follow the Requirements → Design → Planning → Implementation → Testing sequence, updating each folder's `README.md`.
-3. **Approval**: Present the `implementation_plan.md` (summary) for explicit user approval at each major phase.
-4. **Finalize**: Set `**Status**: [DONE]` and update `backlog.md`.
+Triggered when an epic is ready to ship, consolidating all its tickets.
+
+**Workflow:** `Harden → Verify → Deploy → Observe → Document`
+
+1. **Gating**: Epic completes when all local ticket `metadata.json` files read fully approved.
+2. **Validate**: Run `ci/pipeline.sh` (Static analysis, unit tests, dependency scans, env validation).
+3. **Harden**: Fill out `threat_model.md` and `api_contract.md` templates in the Epic folder. Perform E2E regression testing.
+4. **Review/Release**: Verify against the Design Bible/Requirements. Check the "Epic Mastery/Gap Analysis". No epic can close if there are unaccounted gaps.
+5. **Versioning**: Once verified, tag the release version logically using Semantic Versioning (e.g., `git tag v1.X.X`).
+
+> [!TIP]
+> **Command**: To trigger this phase, say **"Start the Epic Hardening protocol for Epic [X]"**. The agent will automatically transition from developer velocity to release hardening.
 
 ### 📝 Core Workflow Rules (Applies to All)
 
 - **Read the Backlog**: Check `project-management/backlog.md` to understand current priorities.
 - **Backlog Update**: Move/Link the item in `backlog.md` under **🔍 Ready for Review** when starting.
 - **Approval**: **Wait for explicit approval** on plans/designs before code execution.
-- **Epic Mastery**: At the end of every finished epic, perform a gap analysis: "Let's review the latest finished epic and find the gaps from requirements and what's implemented."
+- **Epic Mastery**: At the end of every finished epic, perform a gap analysis.
 - **No-Gap Policy**: Never start a new epic if there are unresolved gaps between requirements, designs, database, or current implementation in the previous epic.
 - **Completion**: Update `backlog.md` to **✅ Verified** when confirmed.
 
 ## AI Interaction Guidelines
 
+- **Project Initialization (Tech Stack Sync)**: When initializing a new project or writing the first lines of code, you MUST verify that `ci/ci_config.sh` has been configured for the correct tech stack (e.g., flutter, npm, cargo). If it is still using placeholder values, stop and ask the human to configure it.
+- **Testing Constraints (Tech Stack Sync)**: When initializing a new project, verify that the project has a Component Testing library configured natively (e.g., `flutter_test`, `jest`, `react-testing-library`). If a primary testing framework is missing, you must install and configure it before writing any feature code.
+- **The Self-Improvement Loop (`ai_lessons.md`)**: BEFORE starting any task or writing code, read `project-management/ai_lessons.md`. This is your perpetual memory. If you are corrected by the user during your session, you must add the correction to this file so future agents do not repeat the mistake.
 - **Context First**: Before creating a implementation plan, ensure the feature has a documented **User Flow**. If missing, ask the human to brainstorm the story (from loading screen to journey end). Once created, sync requirements and database schema to the user flow. Use `project-management/design_template/user_flow.md` as a base.
-- **Reference Mockup Implementation (CRITICAL)**: If a ticket's `design/README.md` contains a `## Reference Mockups` section with paths to `.html` mockups, you MUST read those specific HTML files and implement the Flutter UI to match them. Note that the designs are for inspiration only and not to be followed exactly; you may need to add additional fields, buttons, or data based on the database schema and requirements. Do not invent boilerplate UI if a mockup exists, but ensure it meets all functional needs.
+- **Reference Mockup Implementation (CRITICAL)**: If a ticket's `design/README.md` contains a `## Reference Mockups` section with paths to `.html` mockups, you MUST read those specific HTML files and implement the UI to match them. Note that the designs are for inspiration only and not to be followed exactly; you may need to add additional fields, buttons, or data based on the database schema and requirements. Do not invent boilerplate UI if a mockup exists, but ensure it meets all functional needs.
 - **Stitch Interaction Guidelines**: When generating screen designs from Stitch:
   1. Use the **Ideate Mode**.
   2. Instruct Stitch to wait: "I will provide the `vision` and `style_guide` which defines the ambiance and visual tokens for my project. Use this for all UI elements. I want to generate screens **one-by-one**. Please wait for my specific screen request from the `user_flow`."
@@ -137,7 +147,7 @@ The AI assistant should proactively use knowledge memory throughout all interact
 ## Testing & Quality
 
 - Write tests alongside implementation
-- Follow the testing strategy defined in `project-management/tickets/T-XXX/testing/`
+- Follow the testing strategy defined in `project-management/epics/EPIC-NAME/tickets/T-XXX/testing/`
 - Use `/writing-test` to generate unit and integration tests targeting 100% coverage
 - Ensure code passes all tests before considering it complete
 
@@ -147,7 +157,7 @@ The AI assistant should proactively use knowledge memory throughout all interact
 - Keep inline code comments focused and relevant
 - Document architectural decisions and their rationale
 - Use mermaid diagrams for any architectural or data-flow visuals (update existing diagrams if needed)
-- Record test coverage results and outstanding gaps in `project-management/tickets/T-XXX/testing/`
+- Record test coverage results and outstanding gaps in `project-management/epics/EPIC-NAME/tickets/T-XXX/testing/`
 
 ## Key Commands
 
@@ -161,6 +171,8 @@ When working on this project, you can run commands to:
 - Perform structured code reviews (`code-review`)
 - Log salient changes (`/log`)
 - Product discovery (`/discover`)
+- Gap Analysis (`/check-implementation` or "Audit Epic X against PRD")
+- Epic Hardening ("Start the Epic Hardening protocol for Epic X")
 - Task epic planning (`/task`)
 
 ## Activity Log Requirement

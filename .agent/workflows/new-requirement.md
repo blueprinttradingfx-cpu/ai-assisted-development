@@ -8,26 +8,25 @@ I want to add a new feature/requirement. Please guide me through the complete de
 
 First, ask me:
 
-- What is the feature name? (e.g., "user-authentication", "payment-integration")
+- Target Epic? (e.g., "epic-001-user-profile")
+- Feature name? (e.g., "user-authentication", "payment-integration")
 - What problem does it solve?
 - Who will use it?
 - What are the key user stories?
 
 ## Step 2: Create Feature Documentation Structure
 
-Once I provide the requirement, create the following files (copy the existing template content so sections/frontmatter match exactly):
-
-- Start from `project-management/tickets/docs/ai/requirements/README.md` → save as `project-management/tickets/T-{name}/requirements/requirements.md`
-- Start from `project-management/tickets/docs/ai/design/README.md` → save as `project-management/tickets/T-{name}/design/design.md`
-- Start from `project-management/tickets/docs/ai/planning/README.md` → save as `project-management/tickets/T-{name}/planning/planning.md`
-- Start from `project-management/tickets/docs/ai/implementation/README.md` → save as `project-management/tickets/T-{name}/implementation/implementation.md`
-- Start from `project-management/tickets/docs/ai/testing/README.md` → save as `project-management/tickets/T-{name}/testing/testing.md`
+- Source: `project-management/epics/epic_template/tickets/ticket_template/requirements/README.md` → save as `project-management/epics/[EPIC-NAME]/tickets/T-{name}/requirements/README.md`
+- Source: `project-management/epics/epic_template/tickets/ticket_template/design/README.md` → save as `project-management/epics/[EPIC-NAME]/tickets/T-{name}/design/README.md`
+- Source: `project-management/epics/epic_template/tickets/ticket_template/planning/README.md` → save as `project-management/epics/[EPIC-NAME]/tickets/T-{name}/planning/README.md`
+- Source: `project-management/epics/epic_template/tickets/ticket_template/implementation/README.md` → save as `project-management/epics/[EPIC-NAME]/tickets/T-{name}/implementation/README.md`
+- Source: `project-management/epics/epic_template/tickets/ticket_template/testing/README.md` → save as `project-management/epics/[EPIC-NAME]/tickets/T-{name}/testing/README.md`
 
 Ensure the YAML frontmatter and section headings remain identical to the templates before filling in feature-specific content.
 
 ## Step 3: Requirements Phase
 
-Help me fill out `project-management/tickets/T-{name}/requirements/requirements.md`:
+Help me fill out `project-management/epics/[EPIC-NAME]/tickets/T-{name}/requirements/README.md`:
 
 - Clarify the problem statement
 - Define goals and non-goals
@@ -38,7 +37,7 @@ Help me fill out `project-management/tickets/T-{name}/requirements/requirements.
 
 ## Step 4: Design Phase
 
-Guide me through `project-management/tickets/T-{name}/design/design.md`:
+Guide me through `project-management/epics/[EPIC-NAME]/tickets/T-{name}/design/README.md`:
 
 - Propose system architecture changes needed
 - Define data models/schema changes
@@ -49,7 +48,7 @@ Guide me through `project-management/tickets/T-{name}/design/design.md`:
 
 ## Step 5: Planning Phase
 
-Help me break down work in `project-management/tickets/T-{name}/planning/planning.md`:
+Help me break down work in `project-management/epics/[EPIC-NAME]/tickets/T-{name}/planning/README.md`:
 
 - Create task breakdown with subtasks
 - Identify dependencies (on other features, APIs, etc.)
@@ -76,11 +75,11 @@ For each task in the plan:
 3. Guide implementation with reference to design docs
 4. Suggest code structure and patterns
 5. Help with error handling and edge cases
-6. Update `project-management/tickets/T-{name}/implementation/implementation.md` with notes
+6. Update `project-management/epics/[EPIC-NAME]/tickets/T-{name}/implementation/README.md` with notes
 
 ## Step 8: Testing Phase
 
-Guide testing in `project-management/tickets/T-{name}/testing/testing.md`:
+Guide testing in `project-management/epics/[EPIC-NAME]/tickets/T-{name}/testing/README.md`:
 
 - Draft unit test cases with `/writing-test`
 - Draft integration test scenarios with `/writing-test`
@@ -119,7 +118,7 @@ Provide the MR/PR description:
 
 ### Requirements
 
-- Documented in: `project-management/tickets/T-{name}/requirements/requirements.md`
+- Documented in: `project-management/epics/[EPIC-NAME]/tickets/T-{name}/requirements/README.md`
 - Related to: [issue/ticket number if applicable]
 
 ### Changes
@@ -138,7 +137,7 @@ Provide the MR/PR description:
 - Unit tests: [coverage/status]
 - Integration tests: [status]
 - Manual testing: Completed
-- Test documentation: `project-management/tickets/T-{name}/testing/testing.md`
+- Test documentation: `project-management/epics/[EPIC-NAME]/tickets/T-{name}/testing/README.md`
 
 ### Checklist
 

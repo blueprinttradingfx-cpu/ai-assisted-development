@@ -4,25 +4,26 @@
 
 This starter kit evolves your idea through the full product lifecycle: you'll define requirements like a **Product Owner**, design the experience like an **Art Director**, manage tasks like a **Project Manager**, and ship a real product like a **CEO**. You'll experience the real-world software development process — from raw idea to corporate-standard application.
 
-## 🤖 AI Agent Workflow (MUST FOLLOW)
+## 🤖 AI Agent Workflow (Two-Layer SDLC)
 
-When an AI agent starts work, it **MUST** follow the standardized lifecycle defined in **[AGENTS.md](./AGENTS.md)**:
+When an AI agent starts work, it **MUST** follow the standardized **Two-Layer Workflow** defined in **[AGENTS.md](./AGENTS.md)**:
 
-1.  **Requirements**: Deeply analyze the problem and document goals.
-2.  **Design**: Make architectural decisions based on the project's permanent context.
-3.  **Planning**: Create a detailed `implementation_plan.md`.
-4.  **Implementation**: Execute code only AFTER the plan is approved.
-5.  **Testing**: Verify results and document them in a `walkthrough.md`.
+- **Layer 1: Ticket-Level (Velocity)**: Fast iteration on `feature/*` branches. Requirements → Design → Implementation → Unit Testing → Local CI Validation.
+- **Layer 2: Epic-Level (Hardening)**: Release gating on `epic/*` branches. Global CI Validation → Threat Modeling → API Contracts → E2E Testing → Versioning.
+
+> [!TIP]
+> **New to the project?** See the **[Agent Command Guide](./project-management/AGENTS_COMMANDS_GUIDE.md)** for a list of all supported natural language and slash commands.
 
 > [!IMPORTANT]
-> **Agents MUST NOT write production code without an approved Implementation Plan.**
+> **Agents MUST NOT write production code without an approved Implementation Plan and MUST verify all changes with a passing CLI test output before completion.**
 
 ## 🏗️ Project Structure
 
 - **[project-management/](./project-management/)**: The Source of Truth.
   - `project/`: Foundation files (Vision, PRD, FRD, Epic Backlog).
   - `design/`: The Design Bible (Sitemap, Style Guide, Interaction Specs).
-  - `tickets/`: Active development tasks with full phase documentation.
+  - `epics/`: Active Epics containing scoped tickets and release-level hardening documents.
+- **[ci/](./ci/)**: Tech-agnostic CI/CD pipeline scripts (Lint, Test, Security, Enforce Workflow). Configure via `ci/ci_config.sh`.
 - **[web-applications/](./web-applications/)**: Core application codebases.
 - **[packages/](./packages/)**: Shared libraries and tools (including MCP memory).
 - **[skills/](./skills/)**: Custom AI instructions and domain-specific capabilities.

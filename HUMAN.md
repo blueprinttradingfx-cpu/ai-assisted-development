@@ -41,6 +41,10 @@ Please interview me to gather all necessary details. Ask questions covering:
 
 Put this new files on `project-management/project/`.
 
+### Tech Stack Initialization
+
+Immediately open `ci/ci_config.sh` and update the deployment variables (`APP_DIR`, `LINT_CMD`, `TEST_CMD`, `BUILD_CMD`) to match your chosen tech stack (e.g., React, Flutter, Node.js). This ensures the local SDLC pipeline functions correctly for your specific app.
+
 ---
 
 ### 2. Design Phase (Planning & Prep)

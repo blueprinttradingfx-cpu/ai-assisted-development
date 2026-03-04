@@ -12,9 +12,10 @@ Ask me for:
 
 - Feature name (kebab-case, e.g., `user-authentication`)
 - Brief feature/branch description
-- Relevant planning doc path (default `project-management/tickets/T-{name}/planning/planning.md`)
+- Relevant planning doc path (default `project-management/epics/[EPIC-NAME]/tickets/T-{name}/planning/README.md`)
 - Any supporting design/implementation docs (design, requirements, implementation)
 - Current branch and latest diff summary (`git status -sb`, `git diff --stat`)
+- **CI Status**: Check `ci/ci_config.sh` to ensure the correct environment variables are active.
 
 ## Step 2: Load the Plan
 
@@ -45,9 +46,10 @@ For each task in order:
 2. Suggest relevant docs to reference (requirements/design/implementation).
 3. **CRITICAL PRE-CHECK**: Check the `design/README.md` for a `## Reference Mockups` section. If present, use `view_file` to read the specific `.html` mockup file(s). You MUST base your implementation on this exact HTML layout and styling.
 4. Ask: "Plan for this task?" Offer to outline sub-steps using the design doc and `.html` mockups.
-5. Prompt to mark status (`done`, `in-progress`, `blocked`, `skipped`) and capture short notes/next steps.
-6. Encourage code/document edits inside Cursor; offer commands/snippets when useful.
-7. If blocked, record blocker info and move task to the end or into a "Blocked" list.
+5. **CI Config Check**: Before suggesting any shell commands for tests or builds, verify they align with the `LINT_CMD` and `TEST_CMD` defined in `ci/ci_config.sh`.
+6. Prompt to mark status (`done`, `in-progress`, `blocked`, `skipped`) and capture short notes/next steps.
+7. Encourage code/document edits inside Cursor; offer commands/snippets when useful.
+8. If blocked, record blocker info and move task to the end or into a "Blocked" list.
 
 ## Step 5: Update Planning Doc
 
@@ -80,7 +82,7 @@ Produce a summary table:
 
 Remind the user to:
 
-- Update `project-management/tickets/T-{name}/planning/planning.md` with the new statuses
+- Update `project-management/epics/EPIC-ID/tickets/T-{name}/planning/planning.md` with the new statuses
 - Sync related docs (requirements/design/implementation/testing) if decisions changed
 - Run `/check-implementation` to validate changes against design docs
 - Run `/writing-test` to produce unit/integration tests targeting 100% coverage
