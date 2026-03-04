@@ -1,8 +1,8 @@
-# AI DevKit Rules
+# AI Assisted Development Framework Rules
 
 ## Project Context
 
-This project uses ai-devkit for structured AI-assisted development. Phase documentation is located within each ticket folder in `project-management/epics/EPIC-NAME/tickets/T-XXX/`. The core codebase is consolidated under `web-applications/`, shared assets are in `packages/`, and custom AI instructions are in `skills/`.
+This project uses AI Assisted Development Framework for structured AI-assisted development. Phase documentation is located within each ticket folder in `project-management/epics/EPIC-NAME/tickets/T-XXX/`. The core codebase is consolidated under `web-applications/`, shared assets are in `packages/`, and custom AI instructions are in `skills/`.
 
 ### Project Rules
 

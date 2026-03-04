@@ -1,6 +1,6 @@
 # 🧑‍💻 Human Workflow Guide
 
-This guide is for the human operator managing the AI DevKit ecosystem. Your role is to act as the **Orchestrator** and **Source of Truth** for the project.
+This guide is for the human operator managing the AI Assisted Development Framework. Your role is to act as the **Orchestrator** and **Source of Truth** for the project.
 
 ---
 
