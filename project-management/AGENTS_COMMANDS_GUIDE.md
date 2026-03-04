@@ -1,6 +1,6 @@
 # 🤖 AI Agent Command & Workflow Guide
 
-This document defines the specialized "Human-to-AI" commands and discovery protocols supported by this project's **Two-Layer SDLC**. Future agents and users should refer to this guide to maintain architectural integrity.
+This document defines the specialized "Human-to-AI" commands and discovery protocols supported by this project's **Three-Layer SDLC**. Future agents and users should refer to this guide to maintain architectural integrity.
 
 ---
 
@@ -39,6 +39,27 @@ When all tickets for an Epic are marked `status: done`, transition to the Harden
   5. **Versioning**: Prepare semantic versioning tags for the Epic release.
 - **Goal**: Transition from "feature complete" to "enterprise ready."
 
+## 🚀 Project Initiative (PI) Release Protocol
+
+When all Epics mapped to a PI are `status: HARDENED`, trigger the PI Release Phase:
+
+### "Hardening Protocol for Project Initiative [X]"
+
+- **Action**: The agent validates the PI-level DOD checklist:
+  1. **Cross-Epic Audit**: Ensure all Epics connect gracefully (no broken user flows).
+  2. **Zero-Mock Audit**: Verify all providers use `AsyncNotifier` and real API/DB calls.
+  3. **Testing Blitz**: Reach 100% BE unit test coverage and target full FE coverage.
+  4. **Security Scan**: Comprehensive penetration check and dependency review.
+  5. **Release Notes**: Generate `PRODUCTION_RELEASE_NOTES.md`.
+- **Goal**: Final validation before production deployment.
+
+### `start PI-[X] with epics [X-Y]`
+
+- **Context**: Used to initialize a new Project Initiative (PI) manifest.
+- **Action**: The agent validates the range of Epics, checks their current status, and generates `project-management/epics/PI-[X]_Manifest.md`.
+- **DOD**: Initializes the PI-level checklist (Zero Mock, 100% Coverage, etc.) in the manifest.
+- **Goal**: Group multiple hardened epics for a production milestone.
+
 ---
 
 ## 🛠️ SDLC Enforcement Commands
@@ -61,10 +82,6 @@ When all tickets for an Epic are marked `status: done`, transition to the Harden
 - **Build**: By default, the build step is skipped for speed. Use `bash ci/pipeline.sh --build=true` to verify production builds.
 - **Goal**: Hardened gate before any ticket is considered `[DONE]`.
 
-### `bash ci/release_prep.sh project-management/epics/[EPIC-NAME]`
-
-- **Action**: Seeds the Epic Hardening phase by generating a `RELEASE_NOTES.md` and suggesting version tags. 3. **Workflow Gating** (Blocks merge if `metadata.json` implementation/tests/approval is false) 4. **Security Scanning** (Vulnerability check) 5. **Env Validation** (Check config files)
-
 ---
 
 ## ⚖️ The "No-Gap Policy" Rule
@@ -80,15 +97,13 @@ Agents are strictly prohibited from moving to a new Epic until the previous Epic
 
 ---
 
-> [!TIP]
-> **Pro Tip for Humans**: If the AI feels "lost," simply say **"Perform a Gap Analysis on my current progress"** and it will anchor itself back to the PRD and the Epic tree.
-
-## ?? CI/CD Integration (GitHub Actions)
+## 🛡️ CI/CD Integration (GitHub Actions)
 
 The project uses GitHub Actions to enforce the Two-Layer SDLC in the cloud.
 
 ### pipeline.yml
-- **Trigger**: Every pull request and push to main, develop, or release/*.
+
+- **Trigger**: Every pull request and push to main, develop, or release/\*.
 - **Enforcement**:
   1. **Environment Guard**: Blocks if secrets (DATABASE_URL, etc.) are missing.
   2. **Workflow Guard**: Blocks if tickets/epics skip mandatory documentation.
@@ -96,5 +111,23 @@ The project uses GitHub Actions to enforce the Two-Layer SDLC in the cloud.
 - **Tech-Agnostic**: Uses detection logic in ci/setup_runner.sh to support any framework defined in ci/ci_config.sh.
 
 ### Local vs. Remote
-- **Local**: Run bash ci/pipeline.sh manually to catch errors before pushing.
+
 - **Remote**: GitHub Actions acts as the final arbiter for merging.
+
+---
+
+## 🔄 Lifecycle & Maintenance (Retrofit & Migration)
+
+For detailed strategies, refer to the **[Migration & Retrofit Guide](./migration_guide.md)**.
+
+### `Retrofit existing project [Name]`
+
+- **Scenario**: Adopting the framework for a project already in `web-applications/`.
+- **Action**: The agent performs deep codebase analysis, helps draft the **Project Foundation** (Vision/PRD/FRD), creates **Legacy Epics**, and establishes a **PI-0 Manifest**.
+- **Goal**: Bring legacy code under framework governance with a secure baseline.
+
+### `Migrate project to Three-Layer SDLC`
+
+- **Scenario**: Upgrading an older framework project (Tickets only) to the Epic/PI model.
+- **Action**: The agent realigns ticket folders into Epic containers, generates `epic_metadata.json`, and performs a **Retroactive Gap Analysis** against the PRD.
+- **Goal**: Formalize project structure for PI-level releases.

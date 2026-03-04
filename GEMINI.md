@@ -29,7 +29,7 @@ This project uses AI Assisted Development Framework for structured AI-assisted d
 
 ## Development Workflow
 
-This project operates on a rigorous **Two-Layer Workflow** separating developer velocity from release hardening.
+This project operates on a rigorous **Three-Layer Workflow** separating developer velocity, feature hardening, and production readiness.
 
 ### 🚀 Layer 1: Ticket-Level Flow (Developer Velocity)
 
@@ -56,6 +56,25 @@ Triggered when an epic is ready to ship, consolidating all its tickets.
 
 > [!TIP]
 > **Command**: To trigger this phase, say **"Start the Epic Hardening protocol for Epic [X]"**. The agent will automatically transition from developer velocity to release hardening.
+
+### 🏛️ Layer 3: PI-Level Flow (Production Readiness)
+
+Triggered when all Epics for a version release are Hardened. This layer ensures cross-epic synergy and enterprise-grade quality.
+
+**Workflow:** `Holistic Audit → PI Manifest → Security Blitz → Release Notes → Production Deployment`
+
+1. **Manifest**: Maintain `project-management/epics/PI-XXX_Manifest.md` mapping Epics to the release.
+2. **DOD Enforcement**:
+   - **Zero Mock Policy**: ABSOLUTELY NO mock data in the FE or API.
+   - **100% Coverage**: All BE code MUST have full unit test coverage.
+   - **FE Gating**: Flutter tests initialized and targeting full screen coverage.
+   - **Security Audit**: Penetration checks, dependency scans, and risk assessment are mandatory.
+3. **Release**: Generate `PRODUCTION_RELEASE_NOTES.md`.
+4. **Final Gate**: No PI can ship if any DOD item is pending in the Manifest.
+
+> [!IMPORTANT]
+> **Command**: To trigger this phase, say **"Hardening Protocol for Project Initiative [X]"**.
+> **Initialization**: To start a new PI release cycle, say **"start PI-[X] with epics [X-Y]"**. This is a **mandatory** gate before production deployment.
 
 ### 📝 Core Workflow Rules (Applies to All)
 
@@ -173,6 +192,7 @@ When working on this project, you can run commands to:
 - Product discovery (`/discover`)
 - Gap Analysis (`/check-implementation` or "Audit Epic X against PRD")
 - Epic Hardening ("Start the Epic Hardening protocol for Epic X")
+- PI Hardening ("Hardening Protocol for Project Initiative [X]")
 - Task epic planning (`/task`)
 
 ## Activity Log Requirement
@@ -188,6 +208,23 @@ When working on this project, you can run commands to:
 
 - Start with root `index.md` or `README.md`.
 - Only drill into specialized subfolders (e.g., specific ticket folders or specialized rules) when the task requires it.
+
+## 🔄 Legacy Retrofitting & Migration Commands
+
+When the user gives a migration command, follow these technical protocols:
+
+### "Retrofit existing project [Name]"
+
+1.  **Audit First**: Do not skip to implementation. Perform a "Gap Analysis" on legacy code against a newly drafted `PRD.md`.
+2.  **Epic Grouping**: Assist the user in mapping existing files to the new Epic structure in `project-management/epics/`.
+3.  **Harden Baseline**: Guide the user through creating Threat Models and API Contracts for legacy features.
+4.  **PI Baseline**: Initialize `PI-0` to establish the production baseline.
+
+### "Migrate project to Three-Layer SDLC"
+
+1.  **Structural Move**: Realign ticket folders into Epic-themed containers.
+2.  **Metadata Generation**: Generate `epic_metadata.json` for all realigned Epics.
+3.  **Retroactive Audit**: Run "Audit Epic [X] against PRD" for all realigned features.
 
 ## Specialized Rules
 

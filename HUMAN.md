@@ -109,17 +109,44 @@ The coding phase where the application comes to life.
 
 ---
 
+### 5. Project Initiative (PI) Layer (Production Readiness)
+
+The PI layer groups multiple Epics for a major production release. This is the final quality gate.
+
+- **Initialization**: When you are ready to group epics for a release, tell the AI:
+  > **Prompt**: "start PI-1 with epics 0-9"
+- **Required Gate**: PI hardening is **mandatory** before any production deployment. It ensures no mock data, full test coverage, and security compliance.
+- **Workflow**: It is not required to be done "asap" during development, but must be completed before the final release.
+
+---
+
 ## 🔄 Adopting the Framework (Existing Projects)
 
 If you have an existing project (possibly already deployed) and want to adopt this AI-Assisted Development Framework for future scaling and maintenance, follow these steps. You do **not** need to redo the discovery interviews, but you must "anchor" the AI to your current codebase first.
 
-### 1. Retrofit the Foundation
+### 1. Retrofit the Foundation (Scenario 1: Existing Code)
 
-Manually fill out (or ask an AI to analyze the code and help you fill out) the files in `project-management/project/` based on your **existing app's current state**. This ensures the AI knows the "laws" of your project before it starts proposing changes.
+If you have an existing project in `web-applications/`, you can still use the Epic/PI layers to manage its evolution:
 
-### 2. Retrofit the Design Bible
+- **Command**: Tell the AI: **"Retrofit existing project [Name]"**
+- **What it does**: The AI will analyze your existing code, help you draft foundation docs, create legacy epics, and establish a **PI-0 Manifest** baseline.
+- **Steps**:
+  1.  **Define "Legacy" Epics**: Create `epic_backlogs.md` mapping features to Epics.
+  2.  **Create Epic Containers**: folders in `project-management/epics/`.
+  3.  **Establish a Baseline**: Run the **Epic Hardening Protocol** on legacy epics.
 
-Document your **existing UI patterns** in `project-management/design/` (using the design templates). This prevents the AI from introducing "design drift" when building new features.
+### 2. Upgrading to Three-Layer SDLC (Scenario 2: Workflow Migration)
+
+If you are migrating from an older version of the framework that only used tickets:
+
+- **Command**: Tell the AI: **"Migrate project to Three-Layer SDLC"**
+- **What it does**: The AI realigns your ticket folders into Epics, generates metadata, and performs a retroactive gap analysis.
+- **Steps**:
+  1.  **Structural Realignment**: Move ticket folders into `project-management/epics/`.
+  2.  **Generate Metadata**: Generate `epic_metadata.json` for realigned Epics.
+  3.  **Retroactive Gap Analysis**: Run: "Audit Epic [X] against PRD".
+
+See **[migration_guide.md](./migration_guide.md)** for detailed steps and commands for both scenarios.
 
 ### 3. Initialize the AI Workflow
 

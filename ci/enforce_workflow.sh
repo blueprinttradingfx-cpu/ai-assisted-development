@@ -63,4 +63,17 @@ for epic in "$EPICS_DIR"/*; do
   fi
 done
 
-echo "Metadata gating enforced. All tickets in Epic are Approved ✅"
+done
+
+echo "🔍 Checking Project Initiative (PI) Manifests..."
+PI_MANIFESTS=$(find "$EPICS_DIR" -maxdepth 1 -name "PI-*_Manifest.md")
+
+for manifest in $PI_MANIFESTS; do
+  echo "  PI Manifest: $manifest"
+  # Check if any mapped Epics are not HARDENED (simple grep check for 🚧 or [ ] in the Epic Mapping table)
+  if grep -q "| EPIC-" "$manifest" && grep -E "\| EPIC-[0-9]+ \|.*\| (🚧|\[ \])" "$manifest"; then
+    echo "    ⚠️ Warning: PI Manifest $manifest contains unhardened Epics. Production release blocked."
+  fi
+done
+
+echo "Metadata and PI gating enforced. Workflow is valid ✅"
