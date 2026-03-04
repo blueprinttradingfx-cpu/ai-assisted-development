@@ -82,3 +82,19 @@ Agents are strictly prohibited from moving to a new Epic until the previous Epic
 
 > [!TIP]
 > **Pro Tip for Humans**: If the AI feels "lost," simply say **"Perform a Gap Analysis on my current progress"** and it will anchor itself back to the PRD and the Epic tree.
+
+## ?? CI/CD Integration (GitHub Actions)
+
+The project uses GitHub Actions to enforce the Two-Layer SDLC in the cloud.
+
+### pipeline.yml
+- **Trigger**: Every pull request and push to main, develop, or release/*.
+- **Enforcement**:
+  1. **Environment Guard**: Blocks if secrets (DATABASE_URL, etc.) are missing.
+  2. **Workflow Guard**: Blocks if tickets/epics skip mandatory documentation.
+  3. **Quality Guard**: Blocks on lint errors, test failures, or security vulnerabilities (TODO checks included).
+- **Tech-Agnostic**: Uses detection logic in ci/setup_runner.sh to support any framework defined in ci/ci_config.sh.
+
+### Local vs. Remote
+- **Local**: Run bash ci/pipeline.sh manually to catch errors before pushing.
+- **Remote**: GitHub Actions acts as the final arbiter for merging.

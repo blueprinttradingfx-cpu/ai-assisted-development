@@ -12,3 +12,7 @@ export TEST_CMD="flutter test"
 export BUILD_CMD="flutter build web"
 export SECURITY_SCAN_CMD="flutter pub outdated"
 export ENV_VALIDATION_CMD="echo 'Environment validation passed'"
+
+# The command used to setup the environment (e.g., install flutter, node, etc.)
+# Used primarily by CI/CD pipelines to ensure the runner is ready.
+export SETUP_CMD="flutter pub get"
