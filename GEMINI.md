@@ -26,6 +26,7 @@ This project uses AI Assisted Development Framework for structured AI-assisted d
 - Write clear, self-documenting code with meaningful variable names.
 - **Faithful Translation**: Do not use "default" component styles if the high-fidelity mockups in `project-management/design/` specify custom tokens. Extract exact values for padding, margins, colors, and effects.
 - Add comments for complex logic or non-obvious decisions.
+- **Database Schema Sync (CRITICAL)**: Before writing any code that interacts with database tables (API endpoints, services, seeding scripts, migrations), ALWAYS cross-reference the live schema export at `web-applications/<backend>/database/schema/supabase-export.md`. Never assume column names from PRD, FRD, or old documentation — they drift. Use the exact column and table names from the export. If the export file is outdated or missing, ask the human to re-export it from the Supabase Dashboard first.
 
 ## Development Workflow
 
@@ -194,6 +195,7 @@ When working on this project, you can run commands to:
 - Epic Hardening ("Start the Epic Hardening protocol for Epic X")
 - PI Hardening ("Hardening Protocol for Project Initiative [X]")
 - Task epic planning (`/task`)
+- UAT Phase Analysis (`/uat-phase`)
 
 ## Activity Log Requirement
 

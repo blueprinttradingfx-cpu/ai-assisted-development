@@ -6,13 +6,17 @@ source "$(dirname "$0")/ci_config.sh"
 
 echo "Running Dependency Security Scan..."
 
-# Navigate to the dynamic application directory
-cd "$APP_DIR" || { echo "❌ Application directory '$APP_DIR' not found. Please update ci/ci_config.sh."; exit 1; }
+# 1. Frontend (Flutter)
+echo "--- Scanning Frontend ---"
+cd "$ROOT_DIR/$FE_DIR" || exit 1
+flutter pub outdated
 
-# Run the generic security scan command defined in the config
-if [ -n "$SECURITY_SCAN_CMD" ]; then
-    eval "$SECURITY_SCAN_CMD"
-    echo "Security Scan Passed ✅"
-else
-    echo "⚠️ No SECURITY_SCAN_CMD defined in ci_config.sh. Skipping."
-fi
+# 2. Backend (Python)
+echo "--- Scanning Backend ---"
+cd "$ROOT_DIR/$BE_DIR" || exit 1
+echo "Running Bandit (Security Linter)..."
+eval "$BE_SECURITY_CMD"
+echo "Running pip-audit (Vulnerability Scanner)..."
+./venv/Scripts/python.exe -m pip_audit
+
+echo "Security Scan Passed ✅"

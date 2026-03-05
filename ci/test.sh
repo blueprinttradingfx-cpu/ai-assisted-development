@@ -6,10 +6,14 @@ source "$(dirname "$0")/ci_config.sh"
 
 echo "Running Unit Tests..."
 
-# Navigate to the dynamic application directory
-cd "$APP_DIR" || { echo "❌ Application directory '$APP_DIR' not found. Please update ci/ci_config.sh."; exit 1; }
+# 1. Frontend (Flutter)
+echo "--- Testing Frontend ---"
+cd "$ROOT_DIR/$FE_DIR" || exit 1
+eval "$FE_TEST_CMD"
 
-# Run the generic test command defined in the config
-eval "$TEST_CMD"
+# 2. Backend (Python)
+echo "--- Testing Backend ---"
+cd "$ROOT_DIR/$BE_DIR" || exit 1
+eval "$BE_TEST_CMD"
 
 echo "Tests Passed ✅"

@@ -109,7 +109,19 @@ The coding phase where the application comes to life.
 
 ---
 
-### 5. Project Initiative (PI) Layer (Production Readiness)
+### 5. PI Pre-Hardening (Testing Baseline)
+
+Before an Epic can officially enter the PI Hardening Phase, you must ensure the testing baseline is robust.
+
+- **Command**: Tell the AI: **"Initialize Pre-Hardening Testing for PI-[X]"**
+- **Expectation**:
+  - **Backend**: The AI must write tests for _every single service_ (no skips) and run coverage explicitly on `app/services` targeting **80-100% true coverage**.
+  - **Frontend**: The AI must write **Functional & Persona Tests** simulating real user journeys across the Epics (e.g., Onboarding, Decision Engine).
+  - **Reporting**: The AI must output a test coverage report mapping the coverage **per Epic**.
+
+---
+
+### 6. Project Initiative (PI) Layer (Production Readiness)
 
 The PI layer groups multiple Epics for a major production release. This is the final quality gate.
 
@@ -216,4 +228,4 @@ When the AI says a task is `DONE`:
 - **Be the Tie-Breaker**: You are the final authority on project decisions.
 
 > [!TIP]
-> **Domain-Specific Rules**: After setting up your project in `web-applications/`, ask the AI agent to: _"Create a project domain-level agent workflow and specialized rules in `.agent/rules/` based on the [Tech Stack] and best practices."_ This ensures the AI follows industry standards for your specific framework (e.g., Flutter, React, TDD).
+> **Domain-Specific Rules**: After setting up your project in `web-applications/`, ask the AI agent to: _"Create a project domain-level agent workflow and specialized rules in `.agent/rules/` based on the [Tech Stack] and best practices."_ This ensures the AI follows industry standards for your specific framework (e.g., Flutter, React, TDD). For testing, mandate that **all test cases must hit 80-100% coverage** for both frontend and backend tickets, explicitly using the domain-specific test suite workflows (e.g., `/frontend-test-suite`, `/backend-test-suite`) stored in `.agent/workflows/`.

@@ -6,10 +6,17 @@ source "$(dirname "$0")/ci_config.sh"
 
 echo "Running static analysis (Lint)..."
 
-# Navigate to the dynamic application directory
-cd "$APP_DIR" || { echo "❌ Application directory '$APP_DIR' not found. Please update ci/ci_config.sh."; exit 1; }
+# 1. Frontend (Flutter)
+echo "--- Checking Frontend ---"
+cd "$ROOT_DIR/$FE_DIR" || exit 1
+eval "$FE_LINT_CMD"
 
-# Run the generic lint command defined in the config
-eval "$LINT_CMD"
+# 2. Backend (Python)
+echo "--- Checking Backend ---"
+cd "$ROOT_DIR/$BE_DIR" || exit 1
+echo "Running Ruff..."
+eval "$BE_LINT_CMD"
+echo "Running Mypy..."
+eval "$BE_TYPECHECK_CMD"
 
 echo "Lint Passed ✅"

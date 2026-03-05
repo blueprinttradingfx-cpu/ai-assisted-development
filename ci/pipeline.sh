@@ -16,20 +16,11 @@ for arg in "$@"; do
     fi
 done
 
-echo "➡️ Running Linter..."
-bash "$ROOT_DIR/ci/lint.sh"
+echo "➡️ Running Unified Quality Checks..."
+bash "$ROOT_DIR/ci/quality_check.sh"
 
 echo "➡️ Running TODO/FIXME Comment Check..."
 bash "$ROOT_DIR/ci/todo_check.sh"
-
-echo "➡️ Running Tests..."
-bash "$ROOT_DIR/ci/test.sh"
-
-echo "➡️ Running Workflow Enforcement Gates..."
-bash "$ROOT_DIR/ci/enforce_workflow.sh"
-
-echo "➡️ Running Security Scan..."
-bash "$ROOT_DIR/ci/security_scan.sh"
 
 echo "➡️ Running Environment Validation..."
 bash "$ROOT_DIR/ci/env_validation.sh"
