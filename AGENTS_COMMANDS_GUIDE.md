@@ -106,8 +106,55 @@ When all Epics mapped to a PI are `status: HARDENED` and the **Pre-Hardening Pro
 
 ### "/execute-plan" (Ticket Implementation)
 
-- **Context**: Used when starting a specific ticket (e.g., T-001).
+- **Context**: Used when starting a specific ticket (e.g., T-001) manually.
 - **Hardening**: Automatically sources `ci/ci_config.sh` before running any shell commands to ensure tech-agnostic validation.
+
+### "Run AI SDLC Engine" / `npm run start --prefix ./engine -- run T-XXX`
+
+- **Context**: Used to autonomously orchestrate a Ticket through the Requirements -> Design -> Implement -> Validate phases.
+- **Hardening**: Automatically executes `ci/verify.sh` physically on the machine and manages Circuit Breaker failure counts directly in `metadata.json`.
+
+### "Check Ticket Status" / `npm run start --prefix ./engine -- status T-XXX`
+
+- **Context**: Before starting work on any ticket to verify dependencies and current phase.
+- **Action**: Reads ticket metadata, checks dependency DAG, and reports if the ticket is ready to execute.
+- **Output**: Shows current phase, dependency status (blocked/unblocked), failure count, and layer assignment.
+- **Goal**: Prevent starting tickets that have unmet dependencies or are in wrong phase.
+
+### "Show Dependency Tree" / `npm run start --prefix ./engine -- deps T-XXX`
+
+- **Context**: When scoping tickets or understanding execution order within an Epic.
+- **Action**: Builds the full DAG from all tickets and renders a visual tree showing direct and transitive dependencies.
+- **Output**: ASCII tree showing parent → child dependency relationships.
+- **Goal**: Visualize ticket execution order before beginning implementation.
+
+### "List Ready Tickets" / `npm run start --prefix ./engine -- next`
+
+- **Context**: During sprint planning or when deciding which ticket to pick up next.
+- **Action**: Scans all tickets and lists those with all dependencies satisfied (status: completed).
+- **Output**: Numbered list of ticket IDs with titles that are ready for execution.
+- **Goal**: Identify unblockers and parallelizable work within an Epic.
+
+### "Generate AI Context" / `npm run start --prefix ./engine -- context T-XXX`
+
+- **Context**: Before AI begins implementing a ticket.
+- **Action**: Reads ticket metadata, fetches dependency files, locates allowed files, and renders a markdown context pack.
+- **Output**: `.context/T-XXX.md` file containing focused context for the AI.
+- **Goal**: Give AI precise, limited context instead of letting it read arbitrary files.
+
+### "Validate Ticket Scope" / `npm run start --prefix ./engine -- validate T-XXX`
+
+- **Context**: After AI completes implementation but before advancing phase.
+- **Action**: Runs File Guard (checks git diff against allowed patterns) and Architecture Guard (validates layer imports).
+- **Output**: Lists any files modified outside scope or import violations between layers.
+- **Goal**: Catch unauthorized modifications before they reach validation phase.
+
+### "Show Learning Insights" / `npm run start --prefix ./engine -- insights`
+
+- **Context**: During Epic retrospectives or when identifying technical debt patterns.
+- **Action**: Reads learning layer telemetry, calculates metrics, detects signals, and generates insights.
+- **Output**: File volatility rankings, phase failure rates, architecture coupling alerts, complexity recommendations.
+- **Goal**: Continuous improvement from historical ticket execution data.
 
 ### "/handoff" & "/resume" (Session Continuity)
 

@@ -17,13 +17,14 @@ This document serves as the official registry of all supported conversational pr
 
 ## ⚡ 2. Execution & Feature Development
 
-| Action                   | Slash Command           | Equivalent Conversational Prompt                                                                |
-| :----------------------- | :---------------------- | :---------------------------------------------------------------------------------------------- |
-| **Execute Ticket**       | `/execute-plan`         | "Start working on T-XXX according to the implementation plan."                                  |
-| **Test Generation**      | `/writing-test`         | "Generate unit and functional tests for this feature targeting 80-100% coverage."               |
-| **Code Review**          | `/code-review`          | "Review the active codebase against the design and interaction guide."                          |
-| **Check Implementation** | `/check-implementation` | "Compare the current implementation with the design and requirements docs to ensure alignment." |
-| **Log Changes**          | `/log`                  | "Log these salient architectural changes into `activity-log.md`."                               |
+| Action                    | Slash Command           | Equivalent Conversational Prompt                                                                |
+| :------------------------ | :---------------------- | :---------------------------------------------------------------------------------------------- |
+| **Execute Ticket**        | `/execute-plan`         | "Start working on T-XXX according to the implementation plan."                                  |
+| **Automated SDLC Engine** | `npm run start ...`     | "Run `npm run start --prefix ./engine -- run T-XXX` to execute the ticket autonomously."        |
+| **Test Generation**       | `/writing-test`         | "Generate unit and functional tests for this feature targeting 80-100% coverage."               |
+| **Code Review**           | `/code-review`          | "Review the active codebase against the design and interaction guide."                          |
+| **Check Implementation**  | `/check-implementation` | "Compare the current implementation with the design and requirements docs to ensure alignment." |
+| **Log Changes**           | `/log`                  | "Log these salient architectural changes into `activity-log.md`."                               |
 
 ---
 

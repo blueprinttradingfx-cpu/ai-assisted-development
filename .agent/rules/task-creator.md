@@ -33,3 +33,18 @@ Never attempt multiple tasks simultaneously
 Each task should be completable in ~50 lines of code or less
 Always validate task completion and prove it with CLI/log output before proceeding
 }
+
+---
+
+## 🚨 Important: Task Creation vs Execution Commands
+
+**Task planning and task execution use different commands:**
+
+- **Task Planning**: `python .agent/generate_tickets.py` (ticket scaffolding)
+- **Task Execution**: `npm run start --prefix ./engine -- run T-XXX` (implementation)
+
+**When to use each command:**
+- Use `python .agent/generate_tickets.py` when creating individual ticket requirements and design
+- Use `npm run start --prefix ./engine -- run T-XXX` when implementing existing tickets
+
+Never run the execution engine during task planning phases.

@@ -97,13 +97,13 @@ After the strategic planning and high-fidelity design phases are complete, we mo
    - **Ticket Sync Status**: Verify that the AI correctly updated the `- **Ticket**: T-XXX` field for the relevant screens in `screen_list.md`.
    - **Iterate**: Once the current epic is fully scoped and validated, move to the next epic in `epic_backlogs.md` until the entire project is mapped.
 
-4. **Execution Workflow**: Once the full set of tickets for **ALL epics** is validated and in the backlog, development begins: **Work on tickets one-by-one sequentially.** (Ask the AI agent to "start working on T-001" and wait for it to finish before moving to T-002).
+4. **Execution Workflow**: Once the full set of tickets for **ALL epics** is validated and in the backlog, development begins: **Work on tickets one-by-one sequentially.** (Use the AI SDLC Engine by running `npm run start --prefix ./engine -- run T-001` to enforce strict phase progression).
 
 ### 4. Execution (Implementation & Testing)
 
 The coding phase where the application comes to life.
 
-- **One-by-One**: Work on tickets sequentially. ask the AI agent to "start working on T-001" and wait for it to finish before moving to T-002.
+- **One-by-One**: Work on tickets sequentially. Use the AI SDLC Engine (`npm run start --prefix ./engine -- run T-XXX`) for autonomous execution.
 - **Reference Mockup Implementation (CRITICAL)**: If a ticket's `design/README.md` contains a `## Reference Mockups` section with paths to `.html` mockups, the AI MUST read those specific HTML files and implement the UI to match them exactly. Do not allow the AI to invent boilerplate UI if a mockup exists.
 - **Manual Verification**: You must verify every feature against the ticket's success criteria.
 

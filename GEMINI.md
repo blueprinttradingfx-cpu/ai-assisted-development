@@ -184,6 +184,11 @@ The AI assistant should proactively use knowledge memory throughout all interact
 
 **Standardized Slash Command Pathways**: Activating any of these commands locks you into a specific persona (e.g., executing `/writing-test` locks you strictly into QA mode). Do not perform unrelated architectural redesigns or UI tweaks while in a targeted command mode.
 
+**AI SDLC Engine**:
+To autonomously execute a ticket through its strict phases with Circuit Breaker protections:
+
+- Run `npm run start --prefix ./engine -- run T-XXX` to progress the ticket state.
+
 When working on this project, you can run commands to:
 
 - **Session Continuity (The Handoff Protocol)**:

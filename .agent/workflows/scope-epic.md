@@ -26,3 +26,18 @@ To save massive computational tokens and prevent hallucination loops, you MUST u
    - The script will automatically clone the `epic_template` if the epic doesn't exist yet.
    - The script will instantly create all the nested ticket directories, `planning/README.md` files, and perfectly formatted `metadata.json` files for the entire Epic in <1 second.
 3. **Notify User**: Let the human orchestrator know the Epic has been fully scoped and scaffolded.
+
+---
+
+## 🚨 Important: Scoping vs Execution Commands
+
+**This workflow (`/scope-epic`) is for CREATING tickets only.** Do NOT use the execution engine during scoping.
+
+- **Scoping Phase** (this workflow): Use `python .agent/generate_tickets.py` to create ticket structure
+- **Execution Phase** (after scoping): Use `npm run start --prefix ./engine -- run T-XXX` to implement individual tickets
+
+**When to use each command:**
+- `/scope-epic` → Plan and scaffold new tickets in an epic
+- `npm run start --prefix ./engine -- run T-XXX` → Execute existing tickets through SDLC phases
+
+Never run the execution engine during the scoping phase. Scoping is planning; execution is implementation.
