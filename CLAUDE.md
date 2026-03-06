@@ -26,21 +26,22 @@ This project uses AI Assisted Development Framework for structured AI-assisted d
 - Write clear, self-documenting code with meaningful variable names.
 - **Faithful Translation**: Do not use "default" component styles if the high-fidelity mockups in `project-management/design/` specify custom tokens. Extract exact values for padding, margins, colors, and effects.
 - Add comments for complex logic or non-obvious decisions.
+- **Database Schema Sync (CRITICAL)**: Before writing any code that interacts with database tables (API endpoints, services, seeding scripts, migrations), ALWAYS cross-reference the live schema export at `web-applications/<backend>/database/schema/supabase-export.md`. Never assume column names from PRD, FRD, or old documentation — they drift. Use the exact column and table names from the export. If the export file is outdated or missing, ask the human to re-export it from the Supabase Dashboard first.
 
 ## Development Workflow
 
-This project operates on a rigorous **Two-Layer Workflow** separating developer velocity from release hardening.
+This project operates on a rigorous **Three-Layer Workflow** separating developer velocity, feature hardening, and production readiness.
 
 ### 🚀 Layer 1: Ticket-Level Flow (Developer Velocity)
 
 This track is localized to `feature/*` branches and focuses purely on fast execution. No deployment or security theater.
 
-**Workflow:** `Ideation → Ticket → Requirements → Design → Implementation → Testing → Merge (to Epic branch)`
+**Workflow:** `Ideation → Ticket → Requirements → Design → Implementation (Breaths) → Autonomous Verification → Merge (to Epic branch)`
 
 1. **Initialize**: Create ticket folders inside isolated Epic folders (e.g., `/project-management/epics/epic-001/tickets/T-XXX/`).
-2. **Execute**: Implement the feature. Tests here mean Component Unit Tests, linting, and manual local validation.
+2. **Execute (Breath-Based Implementation)**: Implement the feature in strict, classify all tickets per `.agent/rules/parallelism.md`and `circuit-breaker.md` and verified chunks (Breaths). Example: Breath 1 (Database/Models) must be fully complete and verified before Breath 2 (Services/API) begins. Tests here mean Component Unit Tests, linting, and manual local validation. INDEPENDENT tickets execute in parallel; DEPENDENT tickets wait for their breath. Implement each feature within its breath.
 3. **Autonomous Bug Fixing**: If executing a bug fix, skip the heavy Requirements/Design phases. Proceed straight to identifying the failing log, fixing the code, writing the test, and merging.
-4. **Finalize**: Test-Driven Execution dictates you MUST paste passing CLI output before marking `[DONE]`. Update the local ticket `metadata.json`.
+4. **Finalize**: Run `bash ci/verify.sh` and confirm the score meets the Layer 1 threshold (≥ 56 / 70). Paste the passing CLI output before marking `[DONE]`. Score the `project-management/verification-gate.md` checklist and attach the result to the ticket's `testing/README.md`. Update the local ticket `metadata.json`. If the gate is failed twice consecutively on the same ticket, activate the **Circuit Breaker Protocol** (`.agent/rules/circuit-breaker.md`).
 
 ### 🛡️ Layer 2: Epic-Level Flow (Release Hardening)
 
@@ -56,6 +57,25 @@ Triggered when an epic is ready to ship, consolidating all its tickets.
 
 > [!TIP]
 > **Command**: To trigger this phase, say **"Start the Epic Hardening protocol for Epic [X]"**. The agent will automatically transition from developer velocity to release hardening.
+
+### 🏛️ Layer 3: PI-Level Flow (Production Readiness)
+
+Triggered when all Epics for a version release are Hardened. This layer ensures cross-epic synergy and enterprise-grade quality.
+
+**Workflow:** `Holistic Audit → PI Manifest → Security Blitz → Release Notes → Production Deployment`
+
+1. **Manifest**: Maintain `project-management/epics/PI-XXX_Manifest.md` mapping Epics to the release.
+2. **DOD Enforcement**:
+   - **Zero Mock Policy**: ABSOLUTELY NO mock data in the FE or API.
+   - **100% Coverage**: All BE code MUST have full unit test coverage.
+   - **FE Gating**: Flutter tests initialized and targeting full screen coverage.
+   - **Security Audit**: Penetration checks, dependency scans, and risk assessment are mandatory.
+3. **Release**: Generate `PRODUCTION_RELEASE_NOTES.md`.
+4. **Final Gate**: No PI can ship if any DOD item is pending in the Manifest.
+
+> [!IMPORTANT]
+> **Command**: To trigger this phase, say **"Hardening Protocol for Project Initiative [X]"**.
+> **Initialization**: To start a new PI release cycle, say **"start PI-[X] with epics [X-Y]"**. This is a **mandatory** gate before production deployment.
 
 ### 📝 Core Workflow Rules (Applies to All)
 
@@ -153,6 +173,7 @@ The AI assistant should proactively use knowledge memory throughout all interact
 
 ## Documentation
 
+- **The Retrofit Protocol (Living Artifacts)**: If implementation realities force a deviation from the initial `design/README.md` or `requirements/README.md`, you MUST autonomously update those documents to maintain a single source of truth.
 - Update phase documentation when requirements or design changes
 - Keep inline code comments focused and relevant
 - Document architectural decisions and their rationale
@@ -161,8 +182,13 @@ The AI assistant should proactively use knowledge memory throughout all interact
 
 ## Key Commands
 
+**Standardized Slash Command Pathways**: Activating any of these commands locks you into a specific persona (e.g., executing `/writing-test` locks you strictly into QA mode). Do not perform unrelated architectural redesigns or UI tweaks while in a targeted command mode.
+
 When working on this project, you can run commands to:
 
+- **Session Continuity (The Handoff Protocol)**:
+  - `/handoff`: Stop work, summarize current state, blockers, and exact next steps into `project-management/ACTIVE_SESSION.md`.
+  - `/resume`: Read `project-management/ACTIVE_SESSION.md` immediately upon starting a new session to regain context.
 - Understand project requirements and goals (`review-requirements`)
 - Review architectural decisions (`review-design`)
 - Plan and execute tasks (`execute-plan`)
@@ -173,7 +199,9 @@ When working on this project, you can run commands to:
 - Product discovery (`/discover`)
 - Gap Analysis (`/check-implementation` or "Audit Epic X against PRD")
 - Epic Hardening ("Start the Epic Hardening protocol for Epic X")
+- PI Hardening ("Hardening Protocol for Project Initiative [X]")
 - Task epic planning (`/task`)
+- UAT Phase Analysis (`/uat-phase`)
 
 ## Activity Log Requirement
 
@@ -189,6 +217,23 @@ When working on this project, you can run commands to:
 - Start with root `index.md` or `README.md`.
 - Only drill into specialized subfolders (e.g., specific ticket folders or specialized rules) when the task requires it.
 
+## 🔄 Legacy Retrofitting & Migration Commands
+
+When the user gives a migration command, follow these technical protocols:
+
+### "Retrofit existing project [Name]"
+
+1.  **Audit First**: Do not skip to implementation. Perform a "Gap Analysis" on legacy code against a newly drafted `PRD.md`.
+2.  **Epic Grouping**: Assist the user in mapping existing files to the new Epic structure in `project-management/epics/`.
+3.  **Harden Baseline**: Guide the user through creating Threat Models and API Contracts for legacy features.
+4.  **PI Baseline**: Initialize `PI-0` to establish the production baseline.
+
+### "Migrate project to Three-Layer SDLC"
+
+1.  **Structural Move**: Realign ticket folders into Epic-themed containers.
+2.  **Metadata Generation**: Generate `epic_metadata.json` for all realigned Epics.
+3.  **Retroactive Audit**: Run "Audit Epic [X] against PRD" for all realigned features.
+
 ## Specialized Rules
 
 Specialized rules are available in `.agent/rules/`:
@@ -202,3 +247,5 @@ Specialized rules are available in `.agent/rules/`:
 - `user-testing.md`: Test generation from user journeys.
 - `agent-orchestrator.md`: Coordination for complex tasks.
 - `requirements.md`: Systematic requirements analysis.
+- `parallelism.md`: Breath-based parallel ticket execution protocol. Read before starting any multi-ticket sprint.
+- `circuit-breaker.md`: Loop detection and escalation protocol. Applies to all autonomous and semi-autonomous execution.

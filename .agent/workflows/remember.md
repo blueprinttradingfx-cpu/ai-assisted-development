@@ -1,27 +1,13 @@
 ---
-description: Store reusable guidance in the knowledge memory service.
+description: Knowledge auto-extraction into .agent/rules/ or the memory service
 ---
 
-# Remember Knowledge
+Store reusable guidance or a newly solved complex pattern in the knowledge memory service.
 
-When I say "remember this" or want to save a reusable rule, help me store it in the knowledge memory service.
+**Workflow:**
 
-## Step 1: Capture Knowledge
-Ask me for:
-- A short, explicit title (5-12 words)
-- The detailed content (markdown, examples encouraged)
-- Optional tags (keywords like "api", "testing")
-- Optional scope (`global`, `project:<name>`, `repo:<name>`)
-
-If I'm vague, ask follow-ups to make it specific and actionable.
-
-## Step 2: Validate Quality
-- Ensure it is specific and reusable (not generic advice).
-- Avoid storing secrets or sensitive data.
-
-## Step 3: Store
-Call `memory.storeKnowledge` with title, content, tags, scope.
-If MCP tools are unavailable, use `npx ai-devkit memory store` instead.
-
-## Step 4: Confirm
-Summarize what was saved and offer to store more knowledge if needed.
+1. Analyze the work just completed (e.g., a complex frontend UI pattern, a specific database query optimization, a tricky API proxy).
+2. Determine if this pattern is generally applicable to the project.
+3. If using the memory MCP: Use `memory.storeKnowledge` with appropriate tags and global/project scope.
+4. If modifying local rules: Create or append the actionable pattern into the relevant file within `.agent/rules/` (e.g., `javascript.md`, `ui.md`, or a new rule file).
+5. Ensure the extracted rule is strictly actionable and not generic fluff.

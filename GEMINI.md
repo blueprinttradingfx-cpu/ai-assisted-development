@@ -36,12 +36,12 @@ This project operates on a rigorous **Three-Layer Workflow** separating develope
 
 This track is localized to `feature/*` branches and focuses purely on fast execution. No deployment or security theater.
 
-**Workflow:** `Ideation → Ticket → Requirements → Design → Implementation → Testing → Merge (to Epic branch)`
+**Workflow:** `Ideation → Ticket → Requirements → Design → Implementation (Breaths) → Autonomous Verification → Merge (to Epic branch)`
 
 1. **Initialize**: Create ticket folders inside isolated Epic folders (e.g., `/project-management/epics/epic-001/tickets/T-XXX/`).
-2. **Execute**: Implement the feature. Tests here mean Component Unit Tests, linting, and manual local validation.
+2. **Execute (Breath-Based Implementation)**: Implement the feature in strict, classify all tickets per `.agent/rules/parallelism.md`and `circuit-breaker.md` and verified chunks (Breaths). Example: Breath 1 (Database/Models) must be fully complete and verified before Breath 2 (Services/API) begins. Tests here mean Component Unit Tests, linting, and manual local validation. INDEPENDENT tickets execute in parallel; DEPENDENT tickets wait for their breath. Implement each feature within its breath.
 3. **Autonomous Bug Fixing**: If executing a bug fix, skip the heavy Requirements/Design phases. Proceed straight to identifying the failing log, fixing the code, writing the test, and merging.
-4. **Finalize**: Test-Driven Execution dictates you MUST paste passing CLI output before marking `[DONE]`. Update the local ticket `metadata.json`.
+4. **Finalize**: Run `bash ci/verify.sh` and confirm the score meets the Layer 1 threshold (≥ 56 / 70). Paste the passing CLI output before marking `[DONE]`. Score the `project-management/verification-gate.md` checklist and attach the result to the ticket's `testing/README.md`. Update the local ticket `metadata.json`. If the gate is failed twice consecutively on the same ticket, activate the **Circuit Breaker Protocol** (`.agent/rules/circuit-breaker.md`).
 
 ### 🛡️ Layer 2: Epic-Level Flow (Release Hardening)
 
@@ -173,6 +173,7 @@ The AI assistant should proactively use knowledge memory throughout all interact
 
 ## Documentation
 
+- **The Retrofit Protocol (Living Artifacts)**: If implementation realities force a deviation from the initial `design/README.md` or `requirements/README.md`, you MUST autonomously update those documents to maintain a single source of truth.
 - Update phase documentation when requirements or design changes
 - Keep inline code comments focused and relevant
 - Document architectural decisions and their rationale
@@ -181,8 +182,13 @@ The AI assistant should proactively use knowledge memory throughout all interact
 
 ## Key Commands
 
+**Standardized Slash Command Pathways**: Activating any of these commands locks you into a specific persona (e.g., executing `/writing-test` locks you strictly into QA mode). Do not perform unrelated architectural redesigns or UI tweaks while in a targeted command mode.
+
 When working on this project, you can run commands to:
 
+- **Session Continuity (The Handoff Protocol)**:
+  - `/handoff`: Stop work, summarize current state, blockers, and exact next steps into `project-management/ACTIVE_SESSION.md`.
+  - `/resume`: Read `project-management/ACTIVE_SESSION.md` immediately upon starting a new session to regain context.
 - Understand project requirements and goals (`review-requirements`)
 - Review architectural decisions (`review-design`)
 - Plan and execute tasks (`execute-plan`)
@@ -241,3 +247,5 @@ Specialized rules are available in `.agent/rules/`:
 - `user-testing.md`: Test generation from user journeys.
 - `agent-orchestrator.md`: Coordination for complex tasks.
 - `requirements.md`: Systematic requirements analysis.
+- `parallelism.md`: Breath-based parallel ticket execution protocol. Read before starting any multi-ticket sprint.
+- `circuit-breaker.md`: Loop detection and escalation protocol. Applies to all autonomous and semi-autonomous execution.

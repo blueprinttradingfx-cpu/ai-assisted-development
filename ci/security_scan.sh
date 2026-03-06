@@ -6,17 +6,15 @@ source "$(dirname "$0")/ci_config.sh"
 
 echo "Running Dependency Security Scan..."
 
-# 1. Frontend (Flutter)
+# 1. Frontend
 echo "--- Scanning Frontend ---"
 cd "$ROOT_DIR/$FE_DIR" || exit 1
-flutter pub outdated
+eval "$FE_SECURITY_CMD"
 
-# 2. Backend (Python)
+# 2. Backend
 echo "--- Scanning Backend ---"
 cd "$ROOT_DIR/$BE_DIR" || exit 1
-echo "Running Bandit (Security Linter)..."
+echo "Running Security Scanner..."
 eval "$BE_SECURITY_CMD"
-echo "Running pip-audit (Vulnerability Scanner)..."
-./venv/Scripts/python.exe -m pip_audit
 
 echo "Security Scan Passed ✅"

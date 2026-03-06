@@ -25,6 +25,16 @@ Use these natural language commands to trigger deep architectural audits.
 - **Action**: Logs salient changes to `activity-log.md`.
 - **Usage**: Use after completing any ticket or making a major architectural pivot.
 
+### "/init-project"
+
+- **Action**: Bootstraps a new Tita Chi project foundation.
+- **Goal**: Auto-generates the `vision.md`, `PRD.md`, and `FRD.md` templates and fills them out based on initial user prompt.
+
+### "/align-agent"
+
+- **Action**: Syncs a new AI session with the current state of an existing project.
+- **Goal**: Forces the AI to read the PRD, Interaction Guides, and active DB schema before making wild assumptions.
+
 ## 🛡️ Epic Hardening Protocol
 
 When all tickets for an Epic are marked `status: done`, transition to the Hardening Phase using these commands:
@@ -39,6 +49,7 @@ When all tickets for an Epic are marked `status: done`, transition to the Harden
   5. **E2E Journey**: Perform a full walkthrough of the user journey.
   6. **Versioning**: Prepare semantic versioning tags for the Epic release.
   7. **Code Quality Verification**: Execute `python packages/code-quality-checking/quality-check.py --mode epic`. All active applications must pass the "Epic" level gate (Linting, Formatting, Basic Complexity).
+  8. **Verification Gate**: Run `bash ci/verify.sh --layer2`. The Epic CANNOT be marked `HARDENED` unless the score is ≥ 63 / 70. Attach the scored `project-management/verification-gate.md` to the Epic's hardening doc. If the gate fails twice, activate the **Circuit Breaker Protocol**.
 - **Goal**: Transition from "feature complete" to "enterprise ready."
 
 ## 🛑 PI Pre-Hardening Protocol (Test & Coverage Enforcement)
@@ -87,7 +98,7 @@ When all Epics mapped to a PI are `status: HARDENED` and the **Pre-Hardening Pro
 - **Logic**: Reads the UAT Bug Fixes section from `project-management/backlog.md`, performs a retrospective on the fixed bugs, updates long-term memory in `ai_lessons.md`, and generates/updates formal AI rules (`.agent/rules/`) to prevent future occurrences.
 - **Goal**: Create a continuous learning loop from human UAT testing to permanent AI rule improvements.
 
-### "/task" (Epic Scoping)
+### "/scope-epic" (Formerly /task)
 
 - **Context**: Used at the start of a new Epic.
 - **Logic**: Reads `epic_backlogs.md`, clones the `epic_template`, and generates all required tickets into the nested folder structure.
@@ -98,12 +109,30 @@ When all Epics mapped to a PI are `status: HARDENED` and the **Pre-Hardening Pro
 - **Context**: Used when starting a specific ticket (e.g., T-001).
 - **Hardening**: Automatically sources `ci/ci_config.sh` before running any shell commands to ensure tech-agnostic validation.
 
-### "Run CI Pipeline"### `bash ci/pipeline.sh`
+### "/handoff" & "/resume" (Session Continuity)
+
+- **Context**: Used to perfectly preserve state across multiple AI interaction sessions.
+- **Action**:
+  - `/handoff`: The AI stops work and generates `ACTIVE_SESSION.md`, logging the current Epic/Ticket, active phase, blockers, and next immediate action.
+  - `/resume`: The AI reads `ACTIVE_SESSION.md` as its very first action upon waking up, bypassing the need to read raw chat logs to understand where it left off.
+
+### "Run CI Pipeline" / `bash ci/pipeline.sh`
 
 - **Action**: Runs the full local CI suite.
 - **Includes**: Static analysis (linting), unit tests, workflow gating (metadata check), security baseline, and TODO/FIXME check.
 - **Build**: By default, the build step is skipped for speed. Use `bash ci/pipeline.sh --build=true` to verify production builds.
 - **Goal**: Hardened gate before any ticket is considered `[DONE]`.
+
+### "Run Verification Gate" / `bash ci/verify.sh`
+
+- **Action**: Scores the current ticket or Epic against the 70-point `project-management/verification-gate.md` checklist.
+- **Flags**:
+  - `bash ci/verify.sh` → Layer 1 ticket gate (threshold: 56 / 70, 80%)
+  - `bash ci/verify.sh --layer2` → Layer 2 Epic gate (threshold: 63 / 70, 90%)
+  - `bash ci/verify.sh --layer3` → Layer 3 PI gate (threshold: 70 / 70, 100%)
+- **Sources**: `ci/ci_config.sh` automatically — no manual configuration needed.
+- **Output**: Score, pass/fail result, and a summary entry appended to `activity-log.md`.
+- **Goal**: Replaces informal "is this done?" judgement with a scored, auditable quality gate.
 
 ---
 
@@ -119,6 +148,8 @@ Agents are strictly prohibited from moving to a new Epic until the previous Epic
 - [ ] No "Must-Have" features from `PRD.md` are unimplemented.
 - [ ] **Database Mapping** updated and verified against live Supabase schema.
 - [ ] **Quality Gate** passed (`quality-check.py --mode epic`).
+- [ ] **Verification Gate** passed (`bash ci/verify.sh --layer2` — score ≥ 63 / 70). Result attached to Epic hardening doc.
+- [ ] No Circuit Breaker entries in `activity-log.md` left unresolved for this Epic.
 
 ---
 
@@ -157,3 +188,39 @@ For detailed strategies, refer to the **[Migration & Retrofit Guide](./migration
 - **Scenario**: Upgrading an older framework project (Tickets only) to the Epic/PI model.
 - **Action**: The agent realigns ticket folders into Epic containers, generates `epic_metadata.json`, and performs a **Retroactive Gap Analysis** against the PRD.
 - **Goal**: Formalize project structure for PI-level releases.
+
+---
+
+## 🧠 Advanced Automation & Self-Correction (Dominion Flow Features)
+
+These slash commands bypass standard chat limitations, allowing the AI to autonomously correct loops or execute massive tasks unseen.
+
+### "/autonomous" (Autopilot Mode)
+
+- **Scenario**: All tickets in an Epic are fully scoped and ready.
+- **Action**: The AI loops through every ticket in the Epic sequentially. It writes the code, runs the Verification Gate (`/verify-ticket`), debugs itself if the CI fails, and marks `[DONE]` without stopping to ask permission.
+- **Goal**: Uninterrupted velocity for well-scoped, low-risk Epics.
+
+### "/debug" (Systematic State-Tracing)
+
+- **Scenario**: A bug is reported or a test repeatedly fails.
+- **Action**: Forces the AI to identify the exact failing log, read the PRD baseline, draft an explicit fix plan, and write a test to prove the fix prior to conclusion.
+- **Goal**: Ceases AI "guessing" in favor of structured state-tracing.
+
+### "/reflect" (Failure Documentation)
+
+- **Scenario**: The AI trips a Circuit Breaker or hallucinates an incorrect UX pattern.
+- **Action**: Forces the AI to document the exact _Trigger_, _Root Cause_, and _Correction_ inside `ai_lessons.md`.
+- **Goal**: Ensures future AI sessions do not suffer from the same hallucination loop.
+
+### "/remember" (Pattern Extraction)
+
+- **Scenario**: You and the AI just solved a massive architectural or UI problem that should become standard doctrine.
+- **Action**: The AI writes the extracted pattern directly into a `.agent/rules/` file or uses the memory MCP.
+- **Goal**: Transforms ephemeral chat context into permanent AI rules.
+
+### "/dashboard" (UI State Generator)
+
+- **Scenario**: You want a visual overhead look at the project's health.
+- **Action**: The AI runs an autonomous Python script (`.agent/dashboard_sync.py`) that synchronizes all ticket `metadata.json` statuses and generates a visual progress-bar UI in `project-management/DASHBOARD.md`.
+- **Goal**: Zero-token compilation of the project's true CI/CD release state.

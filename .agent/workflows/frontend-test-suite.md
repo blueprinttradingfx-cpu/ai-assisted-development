@@ -21,6 +21,6 @@ Use this workflow whenever the human requests `/frontend-test-suite` or when you
 5.  **Integration (Optional)**:
     - If the feature encompasses a core user journey, add an E2E test to the integration or e2e test directory.
 6.  **Verify Coverage**:
-    - Execute the corresponding test runner and coverage flag (`flutter test --coverage` or `npm run test:coverage`).
+    - Execute the corresponding test runner and coverage flag (`npm run test:coverage` or equivalent).
     - Assess the generated coverage report. Add targeted tests if the coverage falls below the 80% watermark.
 7.  **Complete**: Return the final testing report snippet and securely document any gaps.

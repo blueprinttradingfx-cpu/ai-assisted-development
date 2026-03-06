@@ -25,7 +25,7 @@ Use this workflow when the project enters the User Acceptance Testing (UAT) phas
 
 4. **Rule & Workflow Compilation**:
    - After updating the lessons, compile them into strict, enforceable rules.
-   - Update the relevant global agent rules (e.g., `.agent/rules/flutter.md`, `.agent/rules/fastapi.md`) or create new domain rules to inject these preventative measures into future AI generation tasks.
+   - Update the relevant global agent rules (e.g., `.agent/rules/frontend.md`, `.agent/rules/backend.md`) or create new domain rules to inject these preventative measures into future AI generation tasks.
    - If a new systematic approach was developed during the fix, formalize it as a new `.agent/workflows/*.md` script.
 
 5. **Completion Check**:

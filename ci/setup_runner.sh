@@ -7,26 +7,18 @@ source "$(dirname "$0")/ci_config.sh"
 
 echo "Checking environment for $LINT_CMD..."
 
-# Detect Flutter
-if [[ "$LINT_CMD" == *"flutter"* ]]; then
-    echo "Stack detected: Flutter"
-    if ! command -v flutter &> /dev/null; then
-        echo "Updating PATH for Flutter (expected in subosito/flutter-action context or similar)"
-        # Note: In a real GHA, we'd use a specialized action, but to be agnostic 
-        # we can provide hints or fail gracefully with instructions.
-    fi
-fi
-
-# Detect Node/NPM
-if [[ "$LINT_CMD" == *"npm"* || "$LINT_CMD" == *"yarn"* ]]; then
-    echo "Stack detected: Node.js"
-    npm install
+# Run the project-defined setup command
+if [ -n "$FE_SETUP_CMD" ]; then
+    echo "Running FE_SETUP_CMD: $FE_SETUP_CMD"
+    eval "$FE_SETUP_CMD"
 fi
 
 # Run the project-defined setup command
-if [ -n "$SETUP_CMD" ]; then
-    echo "Running SETUP_CMD: $SETUP_CMD"
-    eval "$SETUP_CMD"
+if [ -n "$BE_SETUP_CMD" ]; then
+    echo "Running BE_SETUP_CMD: $BE_SETUP_CMD"
+    eval "$BE_SETUP_CMD"
 fi
+
+
 
 echo "Runner setup complete ✅"
