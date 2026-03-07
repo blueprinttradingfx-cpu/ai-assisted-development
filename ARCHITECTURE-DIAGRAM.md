@@ -439,6 +439,5 @@ The framework is designed for extension:
 > - `SYSTEM-OVERVIEW.md` - Conceptual overview
 > - `COMMAND-REFERENCE.md` - All available commands
 > - `SKILLS_INVENTORY.md` - Skills roadmap
-> - `FIREFLOW_COMPARISON.md` - How we compare
 
 *This diagram represents the system architecture as of 2024-03-07*

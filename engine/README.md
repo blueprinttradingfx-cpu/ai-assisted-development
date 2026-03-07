@@ -10,7 +10,9 @@ This engine transforms your AI development framework from documentation into an 
 - **Dependency Engine**: DAG-based ticket execution ordering
 - **File Guard**: Prevents unauthorized file modifications
 - **Architecture Guard**: Enforces layer boundaries
+- **Architecture Registry**: Persistent module structure tracking (Phase 6)
 - **Context Builder**: Generates focused AI context packs
+- **Context Compression**: Token optimization for AI context (Phase 6)
 - **Learning Layer**: Captures telemetry for continuous improvement
 
 ## Installation
@@ -83,6 +85,10 @@ npm run start -- insights --export data.json
 │  │  Dependency  │  │   Context    │  │   Learning   │      │
 │  │   Engine     │  │   Builder    │  │    Layer     │      │
 │  └──────────────┘  └──────────────┘  └──────────────┘      │
+│  ┌──────────────┐  ┌──────────────┐                        │
+│  │ Architecture │  │   Context    │                        │
+│  │   Registry   │  │ Compression  │                        │
+│  └──────────────┘  └──────────────┘                        │
 └─────────────────────────────────────────────────────────────┘
                               │
 ┌─────────────────────────────────────────────────────────────┐
@@ -147,6 +153,44 @@ Create `engine/config/architecture_rules.json`:
 }
 ```
 
+### Architecture Registry Configuration
+
+The architecture registry stores module metadata in `engine/architecture/registry.json`:
+
+```json
+{
+  "version": "1.0.0",
+  "projectName": "my-project",
+  "lastUpdated": "2024-01-15T10:30:00Z",
+  "modules": {
+    "AuthService": {
+      "name": "AuthService",
+      "type": "service",
+      "primaryFile": "src/services/auth.ts",
+      "secondaryFiles": ["src/types/auth.ts"],
+      "description": "Handles user authentication",
+      "responsibilities": ["login", "logout", "token-refresh"],
+      "dependencies": ["UserRepository", "TokenManager"],
+      "exposedInterfaces": ["login", "logout", "refreshToken"],
+      "createdAt": "2024-01-10T08:00:00Z",
+      "updatedAt": "2024-01-15T10:30:00Z",
+      "tickets": ["T-042", "T-055"]
+    }
+  },
+  "patterns": {
+    "naming": {
+      "service": "*Service.ts",
+      "manager": "*Manager.ts",
+      "repository": "*Repository.ts"
+    },
+    "structure": {
+      "services": ["src/services/**/*"],
+      "models": ["src/models/**/*"]
+    }
+  }
+}
+```
+
 ## How It Works
 
 ### 1. Dependency Enforcement
@@ -197,7 +241,56 @@ Context includes:
 - Architecture rules for the layer
 - Project documentation links
 
-### 5. Learning System
+### 5. Architecture Registry (Phase 6)
+
+Persistent module structure tracking prevents code duplication and architectural drift:
+
+```bash
+# Register a new module
+npm run start -- architecture register AuthService service src/services/auth.ts \
+  --description "Handles authentication" \
+  --responsibilities "login,logout,token-refresh"
+
+# Query existing modules
+npm run start -- architecture query --type service
+
+# Check for existing modules before creating new ones
+npm run start -- architecture suggest "user authentication" --type service
+
+# Auto-detect modules from codebase
+npm run start -- architecture update --scan
+
+# Export documentation
+npm run start -- architecture export --output ARCHITECTURE.md
+```
+
+**Benefits:**
+- Prevents service fragmentation (e.g., authService.ts, authManager.ts, tokenService.ts)
+- Tracks module dependencies
+- Suggests existing modules for new responsibilities
+- Maintains architecture state across many tickets
+
+### 6. Context Compression (Phase 6)
+
+Reduces AI token usage from ~20k to ~800-1500 tokens per ticket:
+
+```bash
+# Generate compressed context
+npm run start -- context T-123 --compress
+```
+
+**Compression strategies:**
+- Summarizes large files (>50 lines)
+- Extracts only key sections (imports, exports, types, signatures)
+- Phase-specific context subsets
+- Smart file selection via Architecture Registry
+
+**Token savings:**
+- Without compression: ~10k-20k tokens
+- With compression: ~800-1500 tokens
+- Typical savings: 80-90%
+
+### 7. Learning System
 
 After each ticket completes, the engine records:
 - Files modified
@@ -253,19 +346,40 @@ Configure via `architecture_rules.json` and ticket `file_scope`.
 ```
 engine/
 ├── src/
-│   ├── index.ts              # CLI entry point
-│   ├── phase_runner.ts       # Phase orchestration
-│   ├── state_manager.ts      # Ticket metadata I/O
-│   ├── validation_runner.ts  # CI verification hook
+│   ├── index.ts                    # CLI entry point
+│   ├── phase_runner.ts             # Phase orchestration
+│   ├── state_manager.ts            # Ticket metadata I/O
+│   ├── validation_runner.ts        # CI verification hook
+│   ├── dependency_engine.ts        # DAG and dependency logic
+│   ├── file_guard.ts               # File scope enforcement
+│   ├── architecture_guard.ts       # Layer/import validation
+│   ├── architecture_registry.ts    # Persistent module tracking (Phase 6)
+│   ├── context_builder.ts          # AI context generation
+│   ├── context_compression.ts      # Token optimization (Phase 6)
+│   ├── learning_layer.ts           # Telemetry and analytics
+│   ├── agent_orchestrator.ts       # Agent coordination
+│   ├── skills_library.ts           # Skills discovery
+│   ├── parallel/                   # Parallel execution utils
+│   ├── repo_intelligence/          # Code indexing and search
+│   ├── session/                    # Session management
 │   ├── schemas/
-│   │   └── ticket_schema.ts  # Zod validation schemas
-│   ├── dependency_engine.ts  # DAG and dependency logic
-│   ├── file_guard.ts         # File scope enforcement
-│   ├── architecture_guard.ts # Layer/import validation
-│   ├── context_builder.ts    # AI context generation
-│   └── learning_layer.ts     # Telemetry and analytics
+│   │   └── ticket_schema.ts        # Zod validation schemas
+│   └── cli/commands/
+│       ├── architecture.ts         # Architecture registry CLI
+│       ├── context.ts              # Context generation CLI
+│       ├── index-repo.ts           # Repository indexing
+│       ├── search.ts               # Code search commands
+│       ├── research.ts             # Research agent commands
+│       ├── session.ts              # Session management CLI
+│       ├── framework-test.ts       # Health checks
+│       ├── framework-start.ts     # Service startup
+│       └── project-init.ts        # Project initialization
+├── architecture/                   # Architecture registry data
+│   └── registry.json               # Module definitions
 ├── config/
-│   └── architecture_rules.json
+│   └── architecture_rules.json     # Layer rule configuration
+├── commands.json                   # Machine-readable command registry
+├── commands.schema.json            # Command registry schema
 ├── package.json
 └── tsconfig.json
 ```

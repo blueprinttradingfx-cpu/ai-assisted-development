@@ -522,7 +522,6 @@ project-root/
 | `SYSTEM-OVERVIEW.md` | This document - concepts |
 | `SKILLS_INVENTORY.md` | Skills roadmap |
 | `AGENTS.md` | Framework rules |
-| `FIREFLOW_COMPARISON.md` | How we compare |
 
 ---
 

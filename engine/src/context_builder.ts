@@ -8,6 +8,8 @@ import { SessionManager } from './session/session_manager';
 import { ContextCacheManager } from './session/context_cache_manager';
 import { SearchResult } from './repo_intelligence/search';
 import { DetectedPattern } from './repo_intelligence/patterns';
+import { ArchitectureRegistry } from './architecture_registry';
+import { ContextCompressor, PhaseContextBuilder, CompressedFile } from './context_compression';
 
 /**
  * Context Builder - Generates focused context packs for AI execution
@@ -15,7 +17,10 @@ import { DetectedPattern } from './repo_intelligence/patterns';
  * Tech-agnostic: Works with any project type
  * Prevents AI from reading arbitrary files by composing relevant context
  * 
- * Phase 5: Enhanced with Session Persistence
+ * Phase 6: Enhanced with Architecture Registry and Context Compression
+ * - Reduced token usage through intelligent compression
+ * - Persistent architecture awareness
+ * - Phase-specific context subsets
  */
 
 export interface AgentContextPack {
@@ -26,6 +31,7 @@ export interface AgentContextPack {
     relevantFiles: string[];
     allowedFiles: string[];
     architectureRules?: string;
+    architectureContext?: ArchitectureContext; // Phase 6: Module-level architecture info
     projectContext?: ProjectContext;
     generatedAt: string;
     // Phase 5: Session learning metadata
@@ -35,6 +41,14 @@ export interface AgentContextPack {
         content: string;
         tags: string[];
     }>;
+    // Phase 6: Compression metadata
+    compressionInfo?: {
+        originalFiles: number;
+        compressedFiles: number;
+        estimatedTokens: number;
+        compressionRatio: number;
+    };
+    compressedContent?: Map<string, CompressedFile>;
 }
 
 export interface DependencyContext {
@@ -42,6 +56,14 @@ export interface DependencyContext {
     status: string;
     filesModified: string[];
     summary?: string;
+}
+
+export interface ArchitectureContext {
+    primaryModule?: string;
+    relatedModules: string[];
+    suggestedFiles: string[];
+    moduleInstructions: string;
+    layerRules: string;
 }
 
 export interface ProjectContext {
@@ -60,12 +82,21 @@ export interface ContextBuilderConfig {
     // Phase 5: Session persistence options
     enableSessionPersistence?: boolean;
     sessionId?: string;
+    // Phase 6: Architecture registry and compression
+    enableArchitectureRegistry?: boolean;
+    enableContextCompression?: boolean;
+    compressionOptions?: {
+        maxLinesPerFile?: number;
+        summarizeThreshold?: number;
+    };
 }
 
 export class ContextBuilder {
     private config: ContextBuilderConfig;
     private dependencyEngine: DependencyEngine;
     private archGuard: ArchitectureGuard;
+    private archRegistry?: ArchitectureRegistry;
+    private compressor?: ContextCompressor;
     // Phase 5: Session components
     private sessionManager?: SessionManager;
     private contextCache?: ContextCacheManager;
@@ -78,10 +109,27 @@ export class ContextBuilder {
             includeArchitectureRules: true,
             contextOutputDir: '.context',
             enableSessionPersistence: false,
+            // Phase 6: Enable by default
+            enableArchitectureRegistry: true,
+            enableContextCompression: true,
+            compressionOptions: {
+                maxLinesPerFile: 100,
+                summarizeThreshold: 50
+            },
             ...config
         };
         this.dependencyEngine = DependencyEngine.getInstance();
         this.archGuard = new ArchitectureGuard();
+        
+        // Phase 6: Initialize architecture registry
+        if (this.config.enableArchitectureRegistry) {
+            this.archRegistry = ArchitectureRegistry.getInstance();
+        }
+        
+        // Phase 6: Initialize compression
+        if (this.config.enableContextCompression) {
+            this.compressor = new ContextCompressor(this.config.compressionOptions);
+        }
         
         // Phase 5: Initialize session components if enabled
         if (this.config.enableSessionPersistence) {
@@ -470,6 +518,232 @@ export class ContextBuilder {
             if (now - stats.mtime.getTime() > maxAge) {
                 fs.unlinkSync(filePath);
             }
+        }
+    }
+
+    // ==================== Phase 6: Architecture Registry Integration ====================
+
+    /**
+     * Build architecture context using the Architecture Registry
+     * Provides module-level insights for better context accuracy
+     */
+    private async buildArchitectureRegistryContext(
+        ticket: TicketMetadata
+    ): Promise<ArchitectureContext | undefined> {
+        if (!this.archRegistry || !this.config.enableArchitectureRegistry) {
+            return undefined;
+        }
+
+        // Try to find a matching module for this ticket
+        const moduleName = this.inferModuleFromTicket(ticket);
+        if (!moduleName) {
+            return undefined;
+        }
+
+        // Query the registry for module information
+        const moduleContext = this.archRegistry.buildContextForTicket(moduleName);
+        if (!moduleContext) {
+            return undefined;
+        }
+
+        // Build layer rules from ArchitectureGuard
+        const layer = ticket.layer;
+        let layerRules = '';
+        if (layer) {
+            const allowedImports = this.archGuard.getAllowedImports('src/' + layer);
+            layerRules = `Layer: ${layer}\nAllowed imports: ${allowedImports.join(', ') || 'none'}`;
+        }
+
+        return {
+            primaryModule: moduleContext.primaryModule.name,
+            relatedModules: moduleContext.relatedModules.map(m => m.name),
+            suggestedFiles: moduleContext.suggestedFiles,
+            moduleInstructions: moduleContext.moduleInstructions,
+            layerRules
+        };
+    }
+
+    /**
+     * Infer module name from ticket metadata
+     */
+    private inferModuleFromTicket(ticket: TicketMetadata): string | null {
+        // Try to extract module name from ticket title or description
+        const searchText = `${ticket.title} ${ticket.description || ''}`;
+        
+        // Common patterns: "Add X to YModule", "Fix ZService", "Update WManager"
+        const patterns = [
+            /(\w+(?:Service|Manager|Repository|Controller|Component))/i,
+            /(\w+(?:Model|Handler|Middleware|Utility))/i
+        ];
+
+        for (const pattern of patterns) {
+            const match = searchText.match(pattern);
+            if (match) {
+                return match[1];
+            }
+        }
+
+        // Try to match from allowed files
+        const fileScope = ticket.file_scope || { allowed: [] };
+        for (const pattern of fileScope.allowed || []) {
+            // Extract potential module name from file path
+            const fileName = path.basename(pattern, path.extname(pattern));
+            if (fileName && fileName !== '*') {
+                return fileName;
+            }
+        }
+
+        return null;
+    }
+
+    // ==================== Phase 6: Context Compression ====================
+
+    /**
+     * Compress context files for token optimization
+     */
+    private async compressContextFiles(
+        filePaths: string[]
+    ): Promise<Map<string, CompressedFile>> {
+        if (!this.compressor || !this.config.enableContextCompression) {
+            // Return uncompressed
+            const map = new Map<string, CompressedFile>();
+            for (const path of filePaths) {
+                const content = this.readFileSafe(path);
+                if (content) {
+                    const lines = content.split('\n');
+                    map.set(path, {
+                        path,
+                        summary: `${lines.length} lines (uncompressed)`,
+                        keySections: [content],
+                        totalLines: lines.length,
+                        compressedLines: lines.length,
+                        compressionRatio: 1
+                    });
+                }
+            }
+            return map;
+        }
+
+        return this.compressor.compressFiles(filePaths);
+    }
+
+    /**
+     * Generate compressed context file with token optimization
+     */
+    async generateCompressedContextFile(ticketId: string): Promise<string> {
+        const pack = await this.buildContext(ticketId);
+        
+        // Compress relevant files
+        const compressedFiles = await this.compressContextFiles(pack.relevantFiles);
+        
+        // Calculate compression stats
+        const originalTokens = Array.from(compressedFiles.values())
+            .reduce((sum, f) => sum + f.totalLines * 4, 0); // Rough estimate
+        const compressedTokens = this.compressor?.estimateTokens(compressedFiles) || originalTokens;
+        
+        pack.compressionInfo = {
+            originalFiles: pack.relevantFiles.length,
+            compressedFiles: compressedFiles.size,
+            estimatedTokens: compressedTokens,
+            compressionRatio: compressedTokens / originalTokens
+        };
+        pack.compressedContent = compressedFiles;
+
+        // Generate phase-specific optimized context
+        const optimizedMarkdown = this.renderOptimizedContextMarkdown(pack, compressedFiles);
+        
+        // Ensure output directory exists
+        const outputDir = path.resolve(process.cwd(), this.config.contextOutputDir);
+        if (!fs.existsSync(outputDir)) {
+            fs.mkdirSync(outputDir, { recursive: true });
+        }
+
+        const outputPath = path.join(outputDir, `${ticketId}_optimized.md`);
+        fs.writeFileSync(outputPath, optimizedMarkdown, 'utf8');
+        
+        return outputPath;
+    }
+
+    /**
+     * Render optimized context markdown with compression info
+     */
+    private renderOptimizedContextMarkdown(
+        pack: AgentContextPack,
+        compressedFiles: Map<string, CompressedFile>
+    ): string {
+        let md = `# AI Context Pack: ${pack.ticketId} (Optimized)\n\n`;
+        md += `**Generated**: ${pack.generatedAt}\n`;
+        
+        if (pack.compressionInfo) {
+            md += `**Token Estimate**: ~${pack.compressionInfo.estimatedTokens} tokens `;
+            md += `(saved ${Math.round((1 - pack.compressionInfo.compressionRatio) * 100)}%)\n`;
+        }
+        md += '\n';
+        
+        md += `## Goal\n\n${pack.goal}\n\n`;
+        md += `## Current Phase\n\n${pack.currentPhase}\n\n`;
+
+        // Architecture Context
+        if (pack.architectureContext) {
+            md += `## Architecture Context\n\n`;
+            md += `${pack.architectureContext.moduleInstructions}\n\n`;
+            if (pack.architectureContext.layerRules) {
+                md += `**Layer Rules**:\n${pack.architectureContext.layerRules}\n\n`;
+            }
+        }
+
+        // Dependencies
+        if (pack.dependencies.length > 0) {
+            md += `## Dependencies\n\n`;
+            for (const dep of pack.dependencies) {
+                md += `- **${dep.ticketId}** (${dep.status})\n`;
+                if (dep.filesModified.length > 0) {
+                    md += `  - Files: ${dep.filesModified.join(', ')}\n`;
+                }
+            }
+            md += '\n';
+        }
+
+        // Compressed Files
+        md += `## Relevant Code (Compressed)\n\n`;
+        for (const [filePath, file] of compressedFiles) {
+            md += `### ${filePath}\n\n`;
+            md += `> ${file.summary}\n\n`;
+            
+            if (file.keySections.length > 0) {
+                md += '```\n';
+                for (const section of file.keySections) {
+                    md += section + '\n';
+                }
+                md += '```\n\n';
+            }
+        }
+
+        // Allowed Files
+        if (pack.allowedFiles.length > 0) {
+            md += `## Allowed Files (Ticket Scope)\n\n`;
+            for (const file of pack.allowedFiles) {
+                md += `- \`${file}\`\n`;
+            }
+            md += '\n';
+        }
+
+        md += `---\n\n`;
+        md += `**Instructions**: Focus only on the files in "Allowed Files" section. `;
+        md += `Do not modify files outside this scope. `;
+        md += `Reference the dependency files for context but do not change them.\n`;
+
+        return md;
+    }
+
+    /**
+     * Helper: Read file content safely
+     */
+    private readFileSafe(filePath: string): string | null {
+        try {
+            return fs.readFileSync(filePath, 'utf8');
+        } catch {
+            return null;
         }
     }
 }

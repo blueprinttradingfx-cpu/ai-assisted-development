@@ -15,6 +15,7 @@ import { sessionCommand } from './cli/commands/session';
 import { frameworkTestCommand } from './cli/commands/framework-test';
 import { projectInitCommand } from './cli/commands/project-init';
 import { frameworkStartCommand } from './cli/commands/framework-start';
+import { architectureCommand } from './cli/commands/architecture';
 
 const program = new Command();
 
@@ -44,6 +45,9 @@ program.addCommand(projectInitCommand);
 
 // Phase 2: Framework Start
 program.addCommand(frameworkStartCommand);
+
+// Phase 6: Architecture Registry
+program.addCommand(architectureCommand);
 
 program.command('run')
     .description('Runs the SDLC engine for a specific ticket')

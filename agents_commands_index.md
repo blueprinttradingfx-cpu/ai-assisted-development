@@ -1581,6 +1581,145 @@ Migrate project to Three-Layer SDLC
 
 ---
 
+## 🏛️ 13. Architecture Registry Commands
+
+### `ai-engine architecture register`
+
+**Purpose**: Register a module in the architecture registry to prevent code duplication.
+
+**When to use**: After creating a new service, manager, or component.
+
+**What it does**:
+1. Records module name, type, and primary file
+2. Tracks responsibilities and dependencies
+3. Updates `engine/architecture/registry.json`
+4. Links to tickets for traceability
+
+**Example**:
+```bash
+ai-engine architecture register AuthService service src/services/auth.ts \
+  --description "Handles user authentication and JWT tokens" \
+  --responsibilities "login,logout,token-refresh" \
+  --ticket T-042
+```
+
+---
+
+### `ai-engine architecture query`
+
+**Purpose**: Query the architecture registry for module information.
+
+**When to use**: Finding existing modules before creating new ones.
+
+**What it does**:
+1. Lists modules by type (service, manager, repository, etc.)
+2. Shows module details including responsibilities
+3. Displays dependency tree
+4. Suggests relevant modules
+
+**Example**:
+```bash
+ai-engine architecture query --type service
+ai-engine architecture query --module AuthService
+```
+
+---
+
+### `ai-engine architecture validate`
+
+**Purpose**: Validate architecture layer rules and import violations.
+
+**When to use**: Pre-commit or CI pipeline checks.
+
+**What it does**:
+1. Checks layer boundaries (ui → services → models → utils)
+2. Detects unauthorized imports
+3. Reports architectural drift
+4. Enforces consistent structure
+
+**Example**:
+```bash
+ai-engine architecture validate
+ai-engine architecture validate --files "src/services/*.ts"
+```
+
+---
+
+### `ai-engine architecture rules`
+
+**Purpose**: Display current architecture layer rules.
+
+**When to use**: Understanding what imports are allowed per layer.
+
+**What it does**:
+1. Shows layer definitions
+2. Lists allowed imports per layer
+3. Displays file patterns for each layer
+
+**Example**:
+```bash
+ai-engine architecture rules
+```
+
+---
+
+### `ai-engine architecture update`
+
+**Purpose**: Auto-update architecture registry from codebase.
+
+**When to use**: Initial setup or after major refactors.
+
+**What it does**:
+1. Scans codebase for module patterns (*Service, *Manager, etc.)
+2. Auto-detects module types from naming
+3. Registers new modules
+4. Updates existing module metadata
+
+**Example**:
+```bash
+ai-engine architecture update --scan
+```
+
+---
+
+### `ai-engine architecture suggest`
+
+**Purpose**: Suggest existing modules for a responsibility.
+
+**When to use**: Before creating new functionality to avoid duplication.
+
+**What it does**:
+1. Searches for modules with similar responsibilities
+2. Provides confidence scores
+3. Recommends existing modules over new ones
+4. Prevents service fragmentation
+
+**Example**:
+```bash
+ai-engine architecture suggest "user authentication" --type service
+```
+
+---
+
+### `ai-engine architecture export`
+
+**Purpose**: Export architecture registry as markdown documentation.
+
+**When to use**: Creating project documentation or onboarding guides.
+
+**What it does**:
+1. Generates comprehensive module documentation
+2. Groups modules by type
+3. Lists responsibilities and dependencies
+4. Outputs to file or stdout
+
+**Example**:
+```bash
+ai-engine architecture export --output ARCHITECTURE.md
+```
+
+---
+
 ## 📝 Common Command Sequences
 
 ### Morning Startup
