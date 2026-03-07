@@ -2,29 +2,44 @@
 
 Complete index of all skills in the Tita Chi Skills Library.
 
-**Total Skills**: 6  
-**Directories**: 5  
+**Total Skills**: 13  
+**Directories**: 6  
 **Last Updated**: 2024-03-07
 
 ---
 
 ## What Actually Exists
 
-### Existing Directories (5)
+### Existing Directories (6)
 
 | Directory | Skills | Files |
 |-----------|--------|-------|
+| `methodology/` | 7 | `dev-lifecycle/`, `workflow/`, `capture-knowledge/`, `debug/`, `memory/`, `simplify-implementation/`, `technical-writer/` |
 | `flutter/` | 2 | `PROVIDER_STATE_MANAGEMENT.md`, `API_INTEGRATION.md` |
 | `python-fastapi/` | 1 | `PROJECT_STRUCTURE.md` |
 | `authentication/` | 1 | `JWT_AUTH.md` |
 | `database/` | 1 | `REPOSITORY_PATTERN.md` |
-| `flutter/` | 2 | `PROVIDER_STATE_MANAGEMENT.md`, `API_INTEGRATION.md` |
 | `forms/` | 1 | `FORM_VALIDATION.md` |
-| `python-fastapi/` | 1 | `PROJECT_STRUCTURE.md` |
 
 ---
 
 ## Skills by Domain
+
+### Methodology (7 skills)
+
+Workflow and process skills for AI-assisted development.
+
+| Skill | Description |
+|-------|-------------|
+| [dev-lifecycle/](methodology/dev-lifecycle/SKILL.md) | 8-phase SDLC workflow with requirements, design, planning, implementation, testing |
+| [workflow/](methodology/workflow/SKILL.md) | Two-track AI development workflow (Lean vs Full) |
+| [capture-knowledge/](methodology/capture-knowledge/SKILL.md) | Knowledge capture and pattern extraction |
+| [debug/](methodology/debug/SKILL.md) | Systematic debugging protocols |
+| [memory/](methodology/memory/SKILL.md) | Memory management and persistence |
+| [simplify-implementation/](methodology/simplify-implementation/SKILL.md) | Implementation simplification strategies |
+| [technical-writer/](methodology/technical-writer/SKILL.md) | Technical documentation writing |
+
+---
 
 ### Authentication (1 skill)
 
