@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-03-07T06:26:28.671Z",
+  "overall_status": "degraded",
+  "components": {
+    "engine": {
+      "status": "ok",
+      "version": "1.0.0"
+    },
+    "memory": {
+      "status": "ok",
+      "version": "0.4.0"
+    },
+    "qdrant": {
+      "status": "error",
+      "message": "Could not connect to Qdrant: "
+    },
+    "ollama": {
+      "status": "error",
+      "message": "Could not connect to Ollama: "
+    },
+    "sqlite": {
+      "status": "degraded",
+      "details": {
+        "path": "C:\\www\\blueprinttradingfx\\tita-chi\\engine\\session_data.db",
+        "exists": false
+      },
+      "message": "Session database not found (will be created on first use)"
+    }
+  }
+}

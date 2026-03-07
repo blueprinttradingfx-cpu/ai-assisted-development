@@ -222,12 +222,12 @@ Insights include:
 ### Standard Workflow
 
 1. **Create ticket** with dependencies and file scope
-2. **Check status**: `tita-engine status T-123`
-3. **Generate context**: `tita-engine context T-123`
+2. **Check status**: `ai-engine status T-123`
+3. **Generate context**: `ai-engine context T-123`
 4. **AI reads context** from `.context/T-123.md`
 5. **AI implements** within file scope
-6. **Validate**: `tita-engine validate T-123`
-7. **Run engine**: `tita-engine run T-123` (advances phase)
+6. **Validate**: `ai-engine validate T-123`
+7. **Run engine**: `ai-engine run T-123` (advances phase)
 8. **Repeat** until complete
 
 ### Circuit Breaker

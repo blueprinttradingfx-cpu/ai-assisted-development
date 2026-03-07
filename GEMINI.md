@@ -1,14 +1,61 @@
-# AI Assisted Development Framework Rules
+# AI Assisted Development Framework
 
-## Project Context
+> **Rules and guidelines for AI agents working within the framework.**
+> 
+> Project-agnostic | Tech-agnostic | Starter framework for enterprise-grade development
 
-This project uses AI Assisted Development Framework for structured AI-assisted development. Phase documentation is located within each ticket folder in `project-management/epics/EPIC-NAME/tickets/T-XXX/`. The core codebase is consolidated under `web-applications/`, shared assets are in `packages/`, and custom AI instructions are in `skills/`.
+---
 
-### Project Rules
+## 🎯 Project Context
 
-- **Source of Truth**: Always reference the **Project Foundation** (`vision.md`, `PRD.md`, `FRD.md`, `epic_backlogs.md`, `system_architecture.md`) and the **Design Bible** (`project-management/design/sitemap.md`, `style_guide.md`, `interaction_guide.md`, `user_flow.md`, etc.) when working on tasks.
-- **Directory Constraint**: All application code, scripts, and feature implementation MUST reside within the `web-applications/` directory.
-- **Hallucination Prevention**: Verify all task mechanics and rules against the core project docs and exported high-fidelity mockups before implementation.
+This framework provides structured AI-assisted development through a **Three-Layer SDLC**:
+
+| Layer | Focus | Threshold | Location |
+|-------|-------|-----------|----------|
+| **1** | Developer Velocity | 56/70 (80%) | `project-management/epics/EPIC-XXX/tickets/T-XXX/` |
+| **2** | Epic Hardening | 63/70 (90%) | `project-management/epics/EPIC-XXX/` |
+| **3** | Production Readiness | 70/70 (100%) | `project-management/epics/PI-XXX_Manifest.md` |
+
+**Core Codebase**: `web-applications/`  
+**Shared Assets**: `packages/`  
+**AI Instructions**: `skills/` | `skills-library/`  
+**Agent Rules**: `.agent/rules/`  
+
+### Source of Truth
+
+1. **Project Foundation**: `vision.md`, `PRD.md`, `FRD.md`, `epic_backlogs.md`, `system_architecture.md`
+2. **Design Bible**: `sitemap.md`, `style_guide.md`, `interaction_guide.md`, `user_flow.md`
+3. **Implementation**: Mockups, schema exports, live code
+
+## Framework Optimization Guidelines
+
+> **AI Assisted Development Framework is a starter framework** — designed to bootstrap projects quickly while maintaining enterprise-grade quality.
+
+When optimizing or extending the framework:
+
+### Project-Agnostic Improvements
+- All framework enhancements must work across **any project type** (web apps, mobile apps, APIs, etc.)
+- Avoid project-specific logic in core framework files
+- Use configurable templates instead of hardcoded values
+- Design for reusability across different domains and industries
+
+### Tech-Agnostic Improvements  
+- Framework patterns must apply to **any technology stack**
+- Skills library covers: Flutter, FastAPI, Express, React, and more
+- CI/CD scripts auto-detect tech stack via `ci/ci_config.sh`
+- Testing strategies work with: `flutter_test`, `jest`, `pytest`, `cargo test`, etc.
+- Never assume a specific framework; make patterns adaptable
+
+### What This Means
+✅ **Good**: "Add a skill for form validation that works in Flutter, React, and Vue"
+❌ **Bad**: "Add Flutter-specific form validation for this banking app"
+
+✅ **Good**: "Improve the epic scoping workflow for any SDLC"
+❌ **Bad**: "Customize epic scoping just for e-commerce projects"
+
+The framework should remain **portable, adaptable, and stack-agnostic** while providing concrete, copy-pasteable patterns.
+
+---
 
 ## Documentation Structure
 
@@ -123,6 +170,62 @@ Skills are packaged capabilities that teach you new competencies, patterns, and 
 - Before implementing features that match a skill's domain
 - When MCP tools are unavailable but skill provides CLI alternatives
 - To follow established patterns and conventions defined in skills
+
+## Repository Intelligence (Codebase Understanding)
+
+Repository Intelligence provides AI-powered codebase understanding, enabling agents to intelligently query and understand the codebase instead of blind file reading.
+
+### When to Use Repository Intelligence
+
+- **Research Phase**: Before implementing any feature, query the codebase to find relevant code, patterns, and dependencies
+- **Pattern Detection**: Automatically detect architectural patterns (Repository, Service Layer, DI, etc.)
+- **Context Building**: Build optimal context packs for AI agents with relevant files only
+- **Semantic Search**: Search by meaning, not just keywords
+
+### Available Commands
+
+```bash
+# Index repository for intelligent search
+npm run start --prefix ./engine -- index-repo -p ./web-applications
+
+# Search with semantic understanding
+npm run start --prefix ./engine -- search "authentication"
+
+# Find symbols (functions, classes, methods)
+npm run start --prefix ./engine -- symbols "UserService"
+
+# Research a ticket with AI
+npm run start --prefix ./engine -- repo-research T-001
+
+# Get project overview with patterns
+npm run start --prefix ./engine -- overview
+
+# Generate embeddings (requires Ollama)
+npm run start --prefix ./engine -- embed
+```
+
+### Integration with Agent Workflow
+
+The Researcher Agent automatically uses Repository Intelligence when available:
+
+1. **Query**: Researcher queries "Find authentication code"
+2. **ContextPack**: System returns relevant files, patterns, and dependencies
+3. **Output**: Researcher generates RESEARCH.md with detected patterns
+
+### Pattern Detection
+
+Repository Intelligence automatically detects 15+ architectural patterns:
+- **Core**: Repository, Service Layer, Dependency Injection, FastAPI
+- **Design**: Observer, Factory, Singleton, Command, Strategy
+- **Infrastructure**: Middleware, Error Handling, Configuration, Logging, Caching, Validation
+
+### Requirements
+
+- **Qdrant**: Vector database for semantic search (Docker)
+- **Ollama**: Optional, for embeddings (local LLM)
+- **No API Keys**: 100% local, zero cost
+
+For detailed setup and usage, see `engine/docs/REPOSITORY_INTELLIGENCE.md`.
 
 ## Knowledge Memory (Always Use When Helpful)
 
@@ -254,3 +357,4 @@ Specialized rules are available in `.agent/rules/`:
 - `requirements.md`: Systematic requirements analysis.
 - `parallelism.md`: Breath-based parallel ticket execution protocol. Read before starting any multi-ticket sprint.
 - `circuit-breaker.md`: Loop detection and escalation protocol. Applies to all autonomous and semi-autonomous execution.
+- `repository-intelligence.md`: Codebase understanding and intelligent context building. Read before researching or implementing features.

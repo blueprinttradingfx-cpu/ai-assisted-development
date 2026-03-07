@@ -96,7 +96,7 @@ export const TicketMetadataSchema = z.object({
     tests_done: z.boolean().default(false),
     
     // Extensible metadata for project-specific needs
-    metadata: z.record(z.any()).default({}),
+    metadata: z.record(z.string(), z.any()).default({}),
     
     // Timestamps
     created_at: z.string().regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/).optional(),

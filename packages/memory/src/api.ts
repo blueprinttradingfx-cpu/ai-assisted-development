@@ -1,9 +1,12 @@
 import { storeKnowledge } from './handlers/store';
 import { searchKnowledge } from './handlers/search';
-import { closeDatabase } from './database';
+import { closeDatabase, getDatabase } from './database';
+import { DatabaseConnection } from './database/connection';
+import { initializeSchema } from './database/schema';
 import type { StoreKnowledgeInput, SearchKnowledgeInput, StoreKnowledgeResult, SearchKnowledgeResult } from './types';
 
-export { storeKnowledge, searchKnowledge };
+export { storeKnowledge, searchKnowledge, closeDatabase, getDatabase, initializeSchema };
+export { DatabaseConnection };
 export type { StoreKnowledgeInput, SearchKnowledgeInput, StoreKnowledgeResult, SearchKnowledgeResult };
 
 // CLI command handlers for integration with main ai-devkit CLI

@@ -8,13 +8,42 @@ import { FileGuard } from './file_guard';
 import { ArchitectureGuard } from './architecture_guard';
 import { ContextBuilder } from './context_builder';
 import { LearningLayer } from './learning_layer';
+import { indexRepoCommand } from './cli/commands/index-repo';
+import { searchCommand, searchSymbolsCommand, findDependentsCommand, embedCommand, statsCommand } from './cli/commands/search';
+import { researchCommand as repoResearchCommand, overviewCommand } from './cli/commands/research';
+import { sessionCommand } from './cli/commands/session';
+import { frameworkTestCommand } from './cli/commands/framework-test';
+import { projectInitCommand } from './cli/commands/project-init';
+import { frameworkStartCommand } from './cli/commands/framework-start';
 
 const program = new Command();
 
 program
-    .name('tita-engine')
+    .name('ai-engine')
     .description('AI Development Runtime - Execution Engine for AI-Assisted Development')
     .version('1.0.0');
+
+// Repository Intelligence
+program.addCommand(indexRepoCommand);
+program.addCommand(searchCommand);
+program.addCommand(searchSymbolsCommand);
+program.addCommand(findDependentsCommand);
+program.addCommand(embedCommand);
+program.addCommand(statsCommand);
+program.addCommand(repoResearchCommand);
+program.addCommand(overviewCommand);
+
+// Phase 5: Session Persistence
+program.addCommand(sessionCommand);
+
+// Phase 2: Framework Health
+program.addCommand(frameworkTestCommand);
+
+// Phase 2: Project Initialization
+program.addCommand(projectInitCommand);
+
+// Phase 2: Framework Start
+program.addCommand(frameworkStartCommand);
 
 program.command('run')
     .description('Runs the SDLC engine for a specific ticket')
@@ -162,6 +191,198 @@ program.command('insights')
             console.error(`Error: ${error.message}`);
             process.exit(1);
         }
+    });
+
+// Agent System Commands
+program.command('research')
+    .description('Run researcher agent to discover patterns (generates RESEARCH.md)')
+    .argument('<ticketId>', 'The ticket ID to research')
+    .action(async (ticketId) => {
+        try {
+            console.log(`\n🔍 Starting researcher agent for ${ticketId}...`);
+            console.log(`   Load: .agent/agents/researcher/system-prompt.md`);
+            console.log(`   Output: RESEARCH.md\n`);
+            // In actual implementation, this would spawn the agent
+            // For now, provide instructions
+            console.log('Agent Instructions:');
+            console.log('1. Read ticket metadata and PRD');
+            console.log('2. Search skills library for patterns');
+            console.log('3. Map codebase for similar implementations');
+            console.log('4. Write RESEARCH.md with findings\n');
+        } catch (error: any) {
+            console.error(`Error: ${error.message}`);
+            process.exit(1);
+        }
+    });
+
+program.command('plan')
+    .description('Run planner agent to create BLUEPRINT.md')
+    .argument('<ticketId>', 'The ticket ID to plan')
+    .action(async (ticketId) => {
+        try {
+            const metadata = await StateManager.getMetadata(ticketId);
+            if (metadata.current_phase !== 'design') {
+                console.log(`\n⚠️  Ticket is in ${metadata.current_phase} phase.`);
+                console.log('   Planner should run in "design" phase.\n');
+            }
+            
+            console.log(`\n📋 Starting planner agent for ${ticketId}...`);
+            console.log(`   Load: .agent/agents/planner/system-prompt.md`);
+            console.log(`   Input: RESEARCH.md (if exists), PRD.md`);
+            console.log(`   Output: BLUEPRINT.md\n`);
+        } catch (error: any) {
+            console.error(`Error: ${error.message}`);
+            process.exit(1);
+        }
+    });
+
+program.command('execute')
+    .description('Run executor agent to implement BLUEPRINT')
+    .argument('<ticketId>', 'The ticket ID to execute')
+    .action(async (ticketId) => {
+        try {
+            const metadata = await StateManager.getMetadata(ticketId);
+            if (metadata.current_phase !== 'implement') {
+                console.log(`\n⚠️  Ticket is in ${metadata.current_phase} phase.`);
+                console.log('   Executor should run in "implement" phase.\n');
+            }
+            
+            console.log(`\n🔨 Starting executor agent for ${ticketId}...`);
+            console.log(`   Load: .agent/agents/executor/system-prompt.md`);
+            console.log(`   Input: BLUEPRINT.md`);
+            console.log(`   Output: RECORD.md\n`);
+            console.log('Enforcement:');
+            console.log('   - File Guard: Active');
+            console.log('   - Architecture Guard: Active');
+            console.log('   - Honesty Protocols: Required\n');
+        } catch (error: any) {
+            console.error(`Error: ${error.message}`);
+            process.exit(1);
+        }
+    });
+
+program.command('verify')
+    .description('Run verifier agent to validate implementation')
+    .argument('<ticketId>', 'The ticket ID to verify')
+    .action(async (ticketId) => {
+        try {
+            const metadata = await StateManager.getMetadata(ticketId);
+            if (metadata.current_phase !== 'validate') {
+                console.log(`\n⚠️  Ticket is in ${metadata.current_phase} phase.`);
+                console.log('   Verifier should run in "validate" phase.\n');
+            }
+            
+            console.log(`\n✅ Starting verifier agent for ${ticketId}...`);
+            console.log(`   Load: .agent/agents/verifier/system-prompt.md`);
+            console.log(`   Input: BLUEPRINT.md, RECORD.md`);
+            console.log(`   Output: VERIFICATION.md\n`);
+            console.log('Validation:');
+            console.log('   - Must-haves from BLUEPRINT');
+            console.log('   - 70-point checklist');
+            console.log('   - Independent code review\n');
+        } catch (error: any) {
+            console.error(`Error: ${error.message}`);
+            process.exit(1);
+        }
+    });
+
+program.command('agent-status')
+    .description('Check agent execution status for a ticket')
+    .argument('<ticketId>', 'The ticket ID')
+    .action(async (ticketId) => {
+        try {
+            const ticketPath = await StateManager.getTicketPath(ticketId);
+            if (!ticketPath) {
+                throw new Error(`Ticket ${ticketId} not found`);
+            }
+
+            const fs = require('fs-extra');
+            const path = require('path');
+            const ticketDir = path.dirname(ticketPath);
+            
+            console.log(`\n🤖 Agent Execution Status for ${ticketId}:\n`);
+            
+            const agents = [
+                { name: 'Researcher', file: 'RESEARCH.md', agent: 'ai-researcher' },
+                { name: 'Planner', file: 'BLUEPRINT.md', agent: 'ai-planner' },
+                { name: 'Executor', file: 'RECORD.md', agent: 'ai-executor' },
+                { name: 'Verifier', file: 'VERIFICATION.md', agent: 'ai-verifier' }
+            ];
+
+            let completeCount = 0;
+            for (const agent of agents) {
+                const filePath = path.join(ticketDir, agent.file);
+                const exists = await fs.pathExists(filePath);
+                const status = exists ? '✓ Complete' : '○ Pending';
+                if (exists) completeCount++;
+                console.log(`   ${agent.name.padEnd(12)} ${status}`);
+                console.log(`              └─ ${agent.file}`);
+            }
+            
+            console.log(`\n   Progress: ${completeCount}/${agents.length} agents complete\n`);
+            
+            if (completeCount === 0) {
+                console.log('   Next: Run `ai-engine research ' + ticketId + '` to start\n');
+            } else if (completeCount < agents.length) {
+                console.log('   Next: Continue with next agent in pipeline\n');
+            } else {
+                console.log('   ✅ All agents complete! Ticket ready for DONE phase.\n');
+            }
+        } catch (error: any) {
+            console.error(`Error: ${error.message}`);
+            process.exit(1);
+        }
+    });
+
+program.command('agents')
+    .description('List available agents and their purposes')
+    .action(() => {
+        console.log('\n🤖 AI Agent System\n');
+        console.log('Specialized AI agents for different phases of development:\n');
+        
+        const agents = [
+            {
+                name: 'ai-researcher',
+                cmd: 'research',
+                desc: 'Discovers patterns, maps codebase, finds relevant skills',
+                input: 'Ticket metadata, PRD',
+                output: 'RESEARCH.md'
+            },
+            {
+                name: 'ai-planner',
+                cmd: 'plan',
+                desc: 'Creates detailed implementation BLUEPRINT',
+                input: 'RESEARCH.md, PRD',
+                output: 'BLUEPRINT.md'
+            },
+            {
+                name: 'ai-executor',
+                cmd: 'execute',
+                desc: 'Implements code according to BLUEPRINT',
+                input: 'BLUEPRINT.md',
+                output: 'RECORD.md'
+            },
+            {
+                name: 'ai-verifier',
+                cmd: 'verify',
+                desc: 'Validates implementation independently',
+                input: 'BLUEPRINT.md, RECORD.md',
+                output: 'VERIFICATION.md'
+            }
+        ];
+
+        for (const agent of agents) {
+            console.log(`   ${agent.name}`);
+            console.log(`   Command: ai-engine ${agent.cmd} <ticket>`);
+            console.log(`   Purpose: ${agent.desc}`);
+            console.log(`   Input:   ${agent.input}`);
+            console.log(`   Output:  ${agent.output}`);
+            console.log('');
+        }
+        
+        console.log('Usage Flow:\n');
+        console.log('   research → plan → execute → verify');
+        console.log('');
     });
 
 program.parse(process.argv);

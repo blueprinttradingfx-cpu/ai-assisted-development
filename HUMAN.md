@@ -166,66 +166,303 @@ Use this prompt with your AI Coding agent to align it with the codebase and star
 
 ```markdown
 I am adopting the AI-Assisted Development Framework for this existing project in `web-applications/`.
-
 1. **Analysis**: Read and analyze the current codebase and the foundation files in `project-management/project/` and `project-management/design/`.
 2. **Gap Analysis**: Perform a comparison between the existing source code and the documented PRD/FRD.
 3. **Workflow Shift**: Moving forward, we will use the **Epic Scoping** workflow for all new work.
 4. **Backlog Refinement**: Propose the next logical features/tickets for the `backlog.md`.
 5. **Alignment**: Ensure all new tickets are anchored to the existing codebase and the newly created PRD/FRD.
 6. **Standards**: Interview me about the **Coding Standards** used in this project and help me generate specialized **Domain-Specific Rules** in `.agent/rules/`.
+
+> # Human Operator's Manual
+
+> **Guide for human project managers using the AI Assisted Development Framework.**
+
+> You are the conductor. The AI is the orchestra.
+
+---
+
+## Your Role
+
+As the human operator, you:
+- **Define** the vision and goals (`vision.md`)
+- **Approve** plans and designs at checkpoints
+- **Verify** AI output against requirements
+- **Decide** when to override the AI
+- **Own** the final product quality
+
+The AI accelerates execution. You ensure alignment.
+
+---
+
+## Quick Start (New Project)
+
+| Step | Action | You Do | AI Does |
+|------|--------|--------|---------|
+| 1 | Initialize | `/init-project` | Creates structure |
+| 2 | Vision | Fill `vision.md` | Understands goals |
+| 3 | PRD/FRD | Draft requirements | Expands details |
+| 4 | Design | Create mockups | Implements precisely |
+| 5 | Scope | `/scope-epic name` | Generates tickets |
+| 6 | Execute | `/execute-plan T-001` | Builds feature |
+| 7 | Verify | Review output | Marks DONE |
+
+---
+
+## The Complete Workflow
+
+### 1. Foundation Phase (Strategy & Requirements)
+
+**Goal**: Define what you're building and why.
+
+| Document | Your Input | AI Output |
+|----------|-----------|-----------|
+| `vision.md` | Core concept, target users | Refined vision |
+| `PRD.md` | Product features | Detailed requirements |
+| `FRD.md` | Functional needs | Technical specs |
+| `epic_backlogs.md` | High-level epics | Scoped epics |
+| `system_architecture.md` | Tech preferences | Architecture plan |
+
+**See**: `project-management/project/` for templates
+
+---
+
+### 2. Design Phase (Visual Foundation)
+
+**Goal**: Create the "Design Bible" before coding.
+
+| Deliverable | Tool | Output |
+|-------------|------|--------|
+| Sitemap | AI + You | `sitemap.md` |
+| Style Guide | Stitch/AI | `style_guide.md` |
+| Interaction Guide | You + AI | `interaction_guide.md` |
+| User Flow | You + AI | `user_flow.md` |
+| Mockups | Stitch | `.html` files |
+
+**Critical**: Every screen needs a mockup before ticket generation.
+
+---
+
+### 3. Screen Alignment (Living Screen List)
+
+**Goal**: Ensure designs match epics before coding.
+
+**Steps**:
+1. Open `project-management/design/screen_list.md`
+2. Check `[x] Generated` for every exported mockup
+3. Map each screen to correct Epic heading
+4. Verify ticket links in screen list
+
+**This is the handoff point between Design → Implementation**
+
+---
+
+### 4. Ticket Generation (Epic Scoping)
+
+**Goal**: Scope ALL epics before building ANY.
+
+**Repeat for each epic**:
+
+```
+You: "Scope epic [EPIC NAME]"
+
+AI:
+├── Analyzes PRD/FRD requirements
+├── Maps to design mockups
+├── Generates 5-15 tickets
+├── Creates metadata.json per ticket
+└── Links to screen_list.md
 ```
 
----
+**Checkpoints**:
+- [ ] Tickets cover end-to-end user journey
+- [ ] Each ticket references correct mockup
+- [ ] No gaps between requirements and designs
 
-## 💡 How to Feed the machine (The Backlog)
-
-When you have a new idea, don't just tell the AI to "do it". Use the **[project-management/backlog.md](./project-management/backlog.md)**.
-
-### 1. Add a Raw Idea
-
-Add a bullet point under `## 💡 Raw Ideas (Unscoped)`.
-
-> **Example**: "Add a dark mode toggle to the settings page. It should persist in localStorage."
-
-### 2. The Discovery Phase
-
-Ask your AI agent:
-
-> "Analyze the new entries in the backlog. Pick the top priority and help me scope it into a ticket."
+**Then**: Work tickets one-by-one sequentially.
 
 ---
 
-## 🚦 Handling Checkpoints (Decision Making)
+### 5. Execution (Build & Test)
 
-The AI is instructed to stop and ask for your approval at major phases. **Never skip these.**
+**Goal**: Implement with quality gates.
 
-### 📑 Plan Approval (`implementation_plan.md`)
+| Mode | Command | When to Use |
+|------|---------|-------------|
+| **Manual** | `/execute-plan T-XXX` | Complex features, learning |
+| **Autonomous** | `/autonomous epic-XXX` | Well-scoped, routine work |
 
-- **Look for**: Complexity, new dependencies, and "User Review Required" alerts.
-- **Action**: Use the `/execute-plan` workflow if approved, or provide feedback.
-
-### 📐 Design Approval
-
-- **Look for**: Architectural changes that might impact the monorepo.
-- **Action**: Ensure the design aligns with your `PRD.md`.
-
----
-
-## 🧪 Verification & Feedback
-
-When the AI says a task is `DONE`:
-
-1. **Review the `walkthrough.md`**: Look at the logic and visual proofs.
-2. **Manual Test**: Try the feature yourself in the `web-applications/` directory.
-3. **Completion**: Update the `backlog.md` status to `✅ Verified`.
+**Implementation Rules**:
+- AI reads mockup `.html` files exactly
+- No boilerplate UI invented
+- Every feature needs manual verification
+- Use AI SDLC Engine: `npm run start --prefix ./engine -- run T-XXX`
 
 ---
 
-## 🚩 Rules for Success
+### 6. Pre-Hardening (Testing Baseline)
 
-- **Stay in `web-applications/`**: Always anchor your code here.
-- **Guarding the Brain**: If the AI proposes a change that conflicts with the `vision.md`, reject it.
-- **Be the Tie-Breaker**: You are the final authority on project decisions.
+**Goal**: Ensure robust test coverage before PI.
 
-> [!TIP]
-> **Domain-Specific Rules**: After setting up your project in `web-applications/`, ask the AI agent to: _"Create a project domain-level agent workflow and specialized rules in `.agent/rules/` based on the [Tech Stack] and best practices."_ This ensures the AI follows industry standards for your specific framework (e.g., Flutter, React, TDD). For testing, mandate that **all test cases must hit 80-100% coverage** for both frontend and backend tickets, explicitly using the domain-specific test suite workflows (e.g., `/frontend-test-suite`, `/backend-test-suite`) stored in `.agent/workflows/`.
+**Command**: *"Initialize Pre-Hardening Testing for PI-[X]"*
+
+| Component | Target | Evidence |
+|-----------|--------|----------|
+| Backend | 80-100% coverage | `app/services` report |
+| Frontend | Functional + Persona tests | User journey simulations |
+| Reporting | Per-epic coverage map | Coverage report |
+
+---
+
+### 7. PI Layer (Production Release)
+
+**Goal**: Final quality gate for production.
+
+**Command**: *"start PI-1 with epics 0-9"*
+
+**Mandatory Checks**:
+- [ ] Zero mock data in FE/API
+- [ ] 100% backend test coverage
+- [ ] Security audit complete
+- [ ] Cross-epic E2E tests pass
+
+**Required before**: Production deployment
+
+---
+
+## Adopting Framework (Existing Projects)
+
+### Scenario 1: Existing Code (Retrofit)
+
+**Command**: *"Retrofit existing project [Name]"*
+
+| Step | Action | Output |
+|------|--------|--------|
+| 1 | Analyze code | Gap analysis vs PRD |
+| 2 | Define epics | `epic_backlogs.md` |
+| 3 | Create containers | `project-management/epics/` |
+| 4 | Baseline | `PI-0 Manifest` |
+
+### Scenario 2: Workflow Migration
+
+**Command**: *"Migrate project to Three-Layer SDLC"*
+
+| Step | Action | Output |
+|------|--------|--------|
+| 1 | Realign tickets | Move to `epics/` folders |
+| 2 | Generate metadata | `epic_metadata.json` |
+| 3 | Audit | Gap analysis per epic |
+
+**See**: `migration_guide.md` for detailed steps
+
+---
+
+## Managing the Backlog
+
+### Adding Ideas
+
+**Don't**: "AI, add dark mode"
+
+**Do**: Add to `backlog.md` under `## Raw Ideas`
+
+> Example: "Add dark mode toggle to settings. Persist in localStorage."
+
+### Discovery Phase
+
+**Command**: *"Analyze backlog. Pick top priority and scope it."*
+
+AI will:
+- Review raw ideas
+- Suggest priority
+- Draft initial requirements
+
+---
+
+## Checkpoint Approval (Don't Skip)
+
+### Plan Approval (`BLUEPRINT.md`)
+
+**Look for**:
+- Complexity estimates
+- New dependencies
+- "User Review Required" alerts
+
+**Action**: Approve or provide feedback
+
+### Design Approval
+
+**Look for**:
+- Architectural changes
+- Monorepo impacts
+- PRD alignment
+
+**Action**: Verify against product goals
+
+---
+
+## Verification Checklist
+
+When AI marks `DONE`:
+
+- [ ] **Review**: Check `RECORD.md` and code
+- [ ] **Manual Test**: Try the feature yourself
+- [ ] **Compare**: Match against mockup
+- [ ] **Complete**: Mark `Verified` in `backlog.md`
+
+---
+
+## Rules for Success
+
+| Rule | Why It Matters |
+|------|---------------|
+| **Stay in `web-applications/`** | All code lives here |
+| **Guard the Brain** | Reject changes conflicting with `vision.md` |
+| **Be the Tie-Breaker** | Final authority on decisions |
+| **Use Checkpoints** | Catch misalignment early |
+| **Verify Everything** | AI accelerates, you validate |
+
+---
+
+## Domain-Specific Rules
+
+After setup, tell AI:
+
+> *"Create domain-level rules in `.agent/rules/` for [Tech Stack] with best practices. Mandate 80-100% test coverage for all tickets using domain-specific test workflows."*
+
+This ensures:
+- Industry standard patterns
+- Consistent code quality
+- Tech-appropriate testing
+
+---
+
+## When to Override the AI
+
+**Override When**:
+- Security concerns
+- Business logic mismatch
+- UX feels wrong
+- Long-term consequences unclear
+
+**Don't Override**:
+- Code style (trust framework)
+- File organization (trust File Guard)
+- Test requirements (trust 70-point gate)
+- Documentation (trust the process)
+
+---
+
+## Reference
+
+| Document | Purpose |
+|----------|---------|
+| `AGENTS.md` | AI behavior rules |
+| `ARCHITECTURE-DIAGRAM.md` | System overview |
+| `COMMAND-REFERENCE.md` | All commands |
+| `migration_guide.md` | Migration steps |
+| `backlog.md` | Project backlog |
+
+---
+
+> **Framework Version**: 1.0  
+> **Last Updated**: 2024-03-07  
+> **Status**: Active

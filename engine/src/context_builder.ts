@@ -4,15 +4,21 @@ import { StateManager, TicketMetadata } from './state_manager';
 import { DependencyEngine } from './dependency_engine';
 import { ArchitectureGuard } from './architecture_guard';
 import { FileGuard } from './file_guard';
+import { SessionManager } from './session/session_manager';
+import { ContextCacheManager } from './session/context_cache_manager';
+import { SearchResult } from './repo_intelligence/search';
+import { DetectedPattern } from './repo_intelligence/patterns';
 
 /**
  * Context Builder - Generates focused context packs for AI execution
  * 
  * Tech-agnostic: Works with any project type
  * Prevents AI from reading arbitrary files by composing relevant context
+ * 
+ * Phase 5: Enhanced with Session Persistence
  */
 
-export interface ContextPack {
+export interface AgentContextPack {
     ticketId: string;
     goal: string;
     currentPhase: string;
@@ -22,6 +28,13 @@ export interface ContextPack {
     architectureRules?: string;
     projectContext?: ProjectContext;
     generatedAt: string;
+    // Phase 5: Session learning metadata
+    learnedFromSession?: boolean;
+    globalKnowledge?: Array<{
+        title: string;
+        content: string;
+        tags: string[];
+    }>;
 }
 
 export interface DependencyContext {
@@ -44,12 +57,18 @@ export interface ContextBuilderConfig {
     includeDependencyOutputs: boolean;
     includeArchitectureRules: boolean;
     contextOutputDir: string;
+    // Phase 5: Session persistence options
+    enableSessionPersistence?: boolean;
+    sessionId?: string;
 }
 
 export class ContextBuilder {
     private config: ContextBuilderConfig;
     private dependencyEngine: DependencyEngine;
     private archGuard: ArchitectureGuard;
+    // Phase 5: Session components
+    private sessionManager?: SessionManager;
+    private contextCache?: ContextCacheManager;
 
     constructor(config?: Partial<ContextBuilderConfig>) {
         this.config = {
@@ -58,16 +77,33 @@ export class ContextBuilder {
             includeDependencyOutputs: true,
             includeArchitectureRules: true,
             contextOutputDir: '.context',
+            enableSessionPersistence: false,
             ...config
         };
         this.dependencyEngine = DependencyEngine.getInstance();
         this.archGuard = new ArchitectureGuard();
+        
+        // Phase 5: Initialize session components if enabled
+        if (this.config.enableSessionPersistence) {
+            this.sessionManager = new SessionManager();
+            this.contextCache = new ContextCacheManager();
+        }
     }
 
     /**
      * Build context pack for a ticket
+     * Phase 5: Enhanced with caching and session learning
      */
-    async buildContext(ticketId: string): Promise<ContextPack> {
+    async buildContext(ticketId: string): Promise<AgentContextPack> {
+        // Phase 5: Check cache first
+        if (this.contextCache) {
+            const cached = await this.contextCache.get(ticketId);
+            if (cached) {
+                console.log(`Using cached context for ${ticketId}`);
+                return cached;
+            }
+        }
+        
         const ticket = await StateManager.getMetadata(ticketId);
         
         // Collect all context components
@@ -77,7 +113,7 @@ export class ContextBuilder {
         const architectureRules = this.buildArchitectureContext(ticket);
         const projectContext = await this.buildProjectContext();
 
-        const contextPack: ContextPack = {
+        let contextPack: AgentContextPack = {
             ticketId,
             goal: ticket.title || 'No title',
             currentPhase: ticket.current_phase || 'requirements',
@@ -88,8 +124,95 @@ export class ContextBuilder {
             projectContext,
             generatedAt: new Date().toISOString()
         };
+        
+        // Phase 5: Enhance with session learning
+        if (this.config.enableSessionPersistence && this.sessionManager && this.config.sessionId) {
+            contextPack = await this.enhanceWithLearning(contextPack, this.config.sessionId);
+        }
+        
+        // Phase 5: Cross-reference with global knowledge
+        if (this.sessionManager) {
+            const globalKnowledge = await this.sessionManager.getRelevantKnowledge(
+                `${contextPack.goal}`,
+                3
+            );
+            contextPack.globalKnowledge = globalKnowledge.map(k => ({
+                title: k.title,
+                content: k.content,
+                tags: k.tags
+            }));
+        }
+
+        // Phase 5: Cache the result
+        if (this.contextCache && this.config.sessionId) {
+            await this.contextCache.set(ticketId, this.config.sessionId, contextPack);
+        }
 
         return contextPack;
+    }
+    
+    /**
+     * Phase 5: Enhance context with session learning
+     */
+    private async enhanceWithLearning(
+        baseContext: AgentContextPack,
+        sessionId: string
+    ): Promise<AgentContextPack> {
+        if (!this.sessionManager) return baseContext;
+        
+        // Get learned patterns for this session
+        const sessionContext = await this.sessionManager.getSessionContext(sessionId);
+        
+        // Boost confidence for frequently seen patterns
+        // Note: This is a placeholder - actual pattern matching would need integration
+        // with the pattern detection system
+        
+        // Re-rank files based on learned preferences
+        const rankedFiles = baseContext.relevantFiles.map(filePath => {
+            const learnedRelevance = sessionContext.fileRelevance.get(filePath) || 0.5;
+            return { path: filePath, relevance: learnedRelevance };
+        });
+        
+        // Sort by learned relevance
+        rankedFiles.sort((a, b) => b.relevance - a.relevance);
+        
+        baseContext.relevantFiles = rankedFiles.map(f => f.path);
+        baseContext.learnedFromSession = true;
+        
+        return baseContext;
+    }
+    
+    /**
+     * Phase 5: Record query for learning (call after context is used)
+     */
+    async recordQueryUsage(
+        ticketId: string,
+        filesUsed: string[],
+        effectiveness: number
+    ): Promise<void> {
+        if (!this.sessionManager || !this.config.sessionId) return;
+        
+        const ticket = await StateManager.getMetadata(ticketId);
+        const query = ticket.title;
+        
+        // Convert files to SearchResult format
+        const results: SearchResult[] = filesUsed.map(file => ({
+            id: file,
+            file,
+            lineStart: 0,
+            lineEnd: 0,
+            content: '',
+            relevance: effectiveness,
+            chunkType: 'code'
+        }));
+        
+        await this.sessionManager.recordQuery(
+            this.config.sessionId,
+            query,
+            results,
+            [], // Patterns would come from pattern detection
+            0   // Duration not tracked here
+        );
     }
 
     /**
@@ -229,7 +352,7 @@ export class ContextBuilder {
     /**
      * Render context pack as markdown
      */
-    private renderContextMarkdown(pack: ContextPack): string {
+    private renderContextMarkdown(pack: AgentContextPack): string {
         let md = `# AI Context Pack: ${pack.ticketId}\n\n`;
         md += `**Generated**: ${pack.generatedAt}\n\n`;
         
